@@ -12,6 +12,7 @@
         CornerRadius="8"
         BorderBrush="#90FF1493"
         BorderThickness="1"
+        PointerPressed="Border_PointerPressed"
         Background="#90FFC0CB">
         <Border.Effect>
             <DropShadowEffect Opacity="0.15" Color="Black"></DropShadowEffect>

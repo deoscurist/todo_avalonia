@@ -18,13 +18,15 @@
         TransparencyLevelHint="Transparent"
         Background="Transparent">
 
+    
+    <Panel>
     <Border CornerRadius="8" ClipToBounds="True">
         <Border.Background>
             <ImageBrush Source="avares://TodoAvalonia/Assets/background.jpg" Stretch="UniformToFill"/>
         </Border.Background>
 
-        <Grid RowDefinitions="32,96,*,64,0">
-        <Border Grid.Row="0" Padding="8 0" Background="#50FFFFFF" BorderBrush="#70FFFFFF" BorderThickness="1" PointerPressed="TitleBar_PointerPressed">                                                                                                                             
+        <Grid RowDefinitions="32,96,*,64">
+        <Border Grid.Row="0" Padding="8 0" Background="#50FFFFFF" BorderBrush="#70FFFFFF" BorderThickness="1" PointerPressed="TitleBar_PointerPressed">
             <DockPanel LastChildFill="False">                                                                                                                                                                            
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Spacing="4">
                     <Button Width="24" 
@@ -91,8 +93,9 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"/>
         </DockPanel>
-        <views:ModalHostView Grid.Row="4" />
     </Grid>
     </Border>
+    <views:ModalLayoutView />
+    </Panel>
 
 </Window>

@@ -7,9 +7,9 @@ using TodoAvalonia.Messages;
 
 namespace TodoAvalonia.Views;
 
-public partial class ModalHostView : UserControl
+public partial class ModalLayoutView : UserControl
 {
-    public ModalHostView()
+    public ModalLayoutView()
     {
         InitializeComponent();
     }

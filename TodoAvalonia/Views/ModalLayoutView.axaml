@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:TodoAvalonia.ViewModels" x:DataType="vm:MainViewModel"
+             xmlns:conv="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+             xmlns:converters="using:TodoAvalonia.Converters" 
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TodoAvalonia.Views.ModalLayoutView">
+    <Grid Opacity="{Binding ModalContent, Converter={x:Static converters:ModalConverter.NullToOpacity}}"
+          IsHitTestVisible="{Binding ModalContent, Converter={x:Static conv:ObjectConverters.IsNotNull}}">
+        <Grid.Transitions>                                                                                                                                                                                       
+            <Transitions>                                                                                                                                                                                        
+                <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>                                                                                                                                        
+            </Transitions>                                                                                                                                                                                       
+        </Grid.Transitions>  
+        <Border Background="#80000000"/>
+        <Border HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                MaxWidth="480"
+                MaxHeight="640"
+                Margin="16"
+                Padding="16"
+                CornerRadius="8"
+                Background="White"
+                BorderBrush="DeepPink"
+                BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.15" Color="Black"/>
+            </Border.Effect>
+            <Grid>
+                <ContentControl Content="{Binding ModalContent}" />
+                <Button HorizontalAlignment="Right" VerticalAlignment="Top" Content="✕" Click="Close_Click" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
