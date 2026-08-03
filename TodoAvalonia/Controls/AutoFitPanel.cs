@@ -1,0 +1,122 @@
+using System;
+using System.Linq;
+using Avalonia;
+using Avalonia.Controls;
+
+namespace TodoAvalonia.Controls;
+
+public class AutoFitPanel : Panel
+{
+    public static readonly StyledProperty<double> MinItemWidthProperty =
+        AvaloniaProperty.Register<AutoFitPanel, double>(nameof(MinItemWidth), 100);
+
+    public static readonly StyledProperty<double> ColumnSpacingProperty =
+        AvaloniaProperty.Register<AutoFitPanel, double>(nameof(ColumnSpacing));
+
+    public static readonly StyledProperty<double> RowSpacingProperty =
+        AvaloniaProperty.Register<AutoFitPanel, double>(nameof(RowSpacing));
+
+    static AutoFitPanel()
+    {
+        AffectsMeasure<AutoFitPanel>(MinItemWidthProperty, ColumnSpacingProperty, RowSpacingProperty);
+    }
+
+    public double MinItemWidth
+    {
+        get => GetValue(MinItemWidthProperty);
+        set => SetValue(MinItemWidthProperty, value);
+    }
+
+    public double ColumnSpacing
+    {
+        get => GetValue(ColumnSpacingProperty);
+        set => SetValue(ColumnSpacingProperty, value);
+    }
+
+    public double RowSpacing
+    {
+        get => GetValue(RowSpacingProperty);
+        set => SetValue(RowSpacingProperty, value);
+    }
+
+    private int GetColumnCount(double availableWidth)
+    {
+        if (double.IsInfinity(availableWidth) || MinItemWidth <= 0)
+        {
+            return Math.Max(1, Children.Count);
+        }
+
+        var columns = (int)Math.Floor((availableWidth + ColumnSpacing) / (MinItemWidth + ColumnSpacing));
+        return Math.Max(1, columns);
+    }
+
+    private static int GetShortestColumnIndex(double[] columnHeights)
+    {
+        var index = 0;
+        for (var i = 1; i < columnHeights.Length; i++)
+        {
+            if (columnHeights[i] < columnHeights[index])
+            {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        var columns = GetColumnCount(availableSize.Width);
+        var itemWidth = double.IsInfinity(availableSize.Width)
+            ? MinItemWidth
+            : Math.Max(0, (availableSize.Width - (columns - 1) * ColumnSpacing) / columns);
+
+        var columnHeights = new double[columns];
+
+        foreach (var child in Children)
+        {
+            child.Measure(new Size(itemWidth, double.PositiveInfinity));
+
+            var columnIndex = GetShortestColumnIndex(columnHeights);
+            columnHeights[columnIndex] += child.DesiredSize.Height + RowSpacing;
+        }
+
+        var totalHeight = Max(columnHeights);
+        if (totalHeight > 0)
+        {
+            totalHeight -= RowSpacing;
+        }
+
+        var width = double.IsInfinity(availableSize.Width)
+            ? columns * itemWidth + (columns - 1) * ColumnSpacing
+            : availableSize.Width;
+
+        return new Size(width, Math.Max(0, totalHeight));
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        var columns = GetColumnCount(finalSize.Width);
+        var itemWidth = Math.Max(0, (finalSize.Width - (columns - 1) * ColumnSpacing) / columns);
+
+        var columnHeights = new double[columns];
+
+        foreach (var child in Children)
+        {
+            var columnIndex = GetShortestColumnIndex(columnHeights);
+            var x = columnIndex * (itemWidth + ColumnSpacing);
+            var y = columnHeights[columnIndex];
+
+            child.Arrange(new Rect(x, y, itemWidth, child.DesiredSize.Height));
+
+            columnHeights[columnIndex] += child.DesiredSize.Height + RowSpacing;
+        }
+
+        return finalSize;
+    }
+
+    private static double Max(double[] values)
+    {
+        return values.Prepend(0.0).Max();
+    }
+}

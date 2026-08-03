@@ -1,6 +1,10 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using LiteDB;
+using Microsoft.Extensions.DependencyInjection;
+using TodoAvalonia.Data;
 using TodoAvalonia.ViewModels;
 using TodoAvalonia.Views;
 
@@ -13,14 +17,35 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
+    private IServiceProvider ConfigureServices()
+    {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<LiteDatabase>(_ => new LiteDatabase(StoragePathProvider.AppTasksDatabasePath()) {UtcDate = true});
+        services.AddSingleton<ITaskListRepository, TaskListRepository>();
+        services.AddSingleton<TaskListIndexViewModel>();
+        services.AddSingleton<MainViewModel>();
+
+        return services.BuildServiceProvider();
+    }
+
     public override void OnFrameworkInitializationCompleted()
     {
+        var provider = ConfigureServices();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var mainViewModel = provider.GetRequiredService<MainViewModel>();
+            var taskListIndex = provider.GetRequiredService<TaskListIndexViewModel>();
+
+            mainViewModel.MainContent = taskListIndex;
+
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel(),
+                DataContext = mainViewModel,
             };
+
+            desktop.ShutdownRequested += (_, _) => (provider as IDisposable)?.Dispose();
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:TodoAvalonia.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TodoAvalonia.Views.TaskCardView"
+             x:DataType="models:TaskList">
+    <Border
+        Margin="8"
+        Padding="16"
+        CornerRadius="8"
+        BorderBrush="DeepPink"
+        BorderThickness="1"
+        Background="White">
+        <Border.Effect>
+            <DropShadowEffect Opacity="0.15" Color="Black"></DropShadowEffect>
+        </Border.Effect>
+        <StackPanel>
+            <TextBlock Margin="0 0 0 10" FontSize="24" FontFamily="{StaticResource Caveat}" TextWrapping="Wrap" Text="{Binding Title}"/>
+            <TextBlock FontFamily="{StaticResource Caveat}" FontSize="12">16.08.1996 12:35</TextBlock>
+        </StackPanel>
+    </Border>
+</UserControl>

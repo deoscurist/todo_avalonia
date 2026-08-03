@@ -3,20 +3,96 @@
         xmlns:vm="using:TodoAvalonia.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="using:TodoAvalonia.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TodoAvalonia.Views.MainWindow"
         x:DataType="vm:MainViewModel"
+        d:DataContext="{x:Static vm:DesignData.DesignMain}"
         Icon="/Assets/avalonia-logo.ico"
-        Title="TodoAvalonia">
+        Title="TodoAvalonia"
+        MinWidth="384"
+        WindowDecorations="BorderOnly"
+        CanResize="True"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
+    <Border CornerRadius="8" ClipToBounds="True">
+        <Border.Background>
+            <ImageBrush Source="avares://TodoAvalonia/Assets/background.jpg" Stretch="UniformToFill"/>
+        </Border.Background>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+        <Grid RowDefinitions="32,96,*,64,0">
+        <Border Grid.Row="0" Padding="8 0" Background="#50FFFFFF" BorderBrush="#70FFFFFF" BorderThickness="1" PointerPressed="TitleBar_PointerPressed">                                                                                                                             
+            <DockPanel LastChildFill="False">                                                                                                                                                                            
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Spacing="4">
+                    <Button Width="24" 
+                            Height="24" 
+                            Padding="0" 
+                            FontSize="10" 
+                            HorizontalContentAlignment="Center" 
+                            VerticalContentAlignment="Center" 
+                            Background="#30FF0000"
+                            BorderBrush="#70FF0000"
+                            BorderThickness="1"
+                            Foreground="Black" 
+                            Content="✕" Click="Close_Click"/>   
+                    <Button Width="24" 
+                            Height="24" 
+                            Padding="0" 
+                            FontSize="10" 
+                            HorizontalContentAlignment="Center" 
+                            VerticalContentAlignment="Center" 
+                            Background="#30FFAA00"
+                            BorderBrush="#70FFAA00"
+                            BorderThickness="1"
+                            Foreground="Black" 
+                            Content="□" Click="Maximize_Click"/>  
+                    <Button Width="24" 
+                            Height="24" 
+                            Padding="0" 
+                            FontSize="10" 
+                            HorizontalContentAlignment="Center" 
+                            VerticalContentAlignment="Center" 
+                            Background="#3000FF00"
+                            BorderBrush="#7000FF00"
+                            BorderThickness="1"
+                            Foreground="Black" 
+                            Content="—" Click="Minimize_Click"/>                                                                                                                                                         
+                </StackPanel>                                                                                                                                                                                            
+            </DockPanel>                                                                                                                                                                                                 
+        </Border>  
+        
+        <DockPanel Grid.Row="1">
+            <TextBlock
+                       Foreground="DeepPink"
+                       Text="My Happy Little Todo List"
+                       FontFamily="{StaticResource Birthstone}"
+                       FontSize="48"
+                       Margin="16"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Bisque"></DropShadowEffect>
+                </TextBlock.Effect>
+            </TextBlock>
+        </DockPanel>
+
+        <ContentControl Grid.Row="2" Content="{Binding MainContent}" />
+        
+        <DockPanel Grid.Row="3" Margin="0 16">
+            <TextBlock 
+                FontFamily="{StaticResource BadScript}"
+                FontSize="18"
+                
+                Foreground="DeepPink"
+                Text="Copyright. Made by @deoscurist"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"/>
+        </DockPanel>
+        <views:ModalHostView Grid.Row="4" />
+    </Grid>
+    </Border>
 
 </Window>
