@@ -4,33 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
              xmlns:models="clr-namespace:TodoAvalonia.Models"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
+             d:DataContext="{x:Static vm:DesignData.DesignTaskListForm}"
              x:Class="TodoAvalonia.Views.TaskListFormView" x:DataType="vm:TaskListFormViewModel">
-    <DockPanel LastChildFill="True">                                                                                                                                                                             
-          <StackPanel DockPanel.Dock="Top" Spacing="8">                                                                                                                                                            
-              <TextBox PlaceholderText="Title" Text="{Binding Title}" />                                                                                                                                                 
-              <DatePicker SelectedDate="{Binding ExpiredAt}" />                                                                                                                                                    
-          </StackPanel>                                                                                                                                                                                            
-                                                                                                                                                                                                                   
-          <Button DockPanel.Dock="Top" Content="Save" Command="{Binding SaveCommand}" />                                                                                                                           
-                                                                                                                                                                                                                   
-          <ScrollViewer>                                                                                                                                                                                           
-              <StackPanel Spacing="4">                                                                                                                                                                             
-                  <Button Content="+ Add item" Command="{Binding AddItemCommand}" />                                                                                                                               
-                  <ItemsControl ItemsSource="{Binding Items}">                                                                                                                                                     
-                      <ItemsControl.ItemTemplate>                                                                                                                                                                  
-                          <DataTemplate x:DataType="models:TaskItem">                                                                                                                                              
-                              <DockPanel Margin="0 2">                                                                                                                                                             
-                                  <Button DockPanel.Dock="Right"                                                                                                                                                   
-                                          Content="✕"                                                                                                                                                              
-                                          Command="{Binding $parent[ItemsControl].((vm:TaskListFormViewModel)DataContext).RemoveItemCommand}"                                                                      
-                                          CommandParameter="{Binding}" />                                                                                                                                          
-                                  <TextBox Text="{Binding Content}" />                                                                                                                                             
-                              </DockPanel>                                                                                                                                                                         
-                          </DataTemplate>                                                                                                                                                                          
-                      </ItemsControl.ItemTemplate>                                                                                                                                                                 
-                  </ItemsControl>                                                                                                                                                                                  
-              </StackPanel>                                                                                                                                                                                        
-          </ScrollViewer>                                                                                                                                                                                          
-      </DockPanel> 
+    <Grid RowDefinitions="*,48" Margin="0 8">
+        <ScrollViewer>
+            <StackPanel Spacing="8" Margin="0 8">
+                <TextBlock FontSize="24" Text="{Binding ModalTitle}"/>
+                <StackPanel Margin="0 8">
+                    <TextBlock>Title:</TextBlock>
+                    <TextBox PlaceholderText="Type fabulous title..." Text="{Binding Title}" />
+                </StackPanel>
+                <StackPanel Margin="0 8">
+                    <TextBlock>Expired at:</TextBlock>
+                    <DatePicker SelectedDate="{Binding ExpiredAt}" />
+                </StackPanel>
+                
+                <StackPanel Margin="0 8">
+                    <Grid ColumnDefinitions="*,auto,auto">
+                        <TextBlock VerticalAlignment="Center" Grid.Column="0">Task List:</TextBlock>
+                        <Button VerticalAlignment="Center" Grid.Column="2" Content="+ Add item" Command="{Binding AddItemCommand}" />
+                    </Grid>
+                    <Grid Margin="0 8">
+                        <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Padding="8">
+                            <ItemsControl ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:TaskItem">
+                                        <DockPanel Margin="0 2">
+                                            <Button DockPanel.Dock="Right"
+                                                    Content="✕"
+                                                    Command="{Binding $parent[ItemsControl].((vm:TaskListFormViewModel)DataContext).RemoveItemCommand}"
+                                                    CommandParameter="{Binding}" />
+                                            <TextBox Text="{Binding Content}" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="1">
+            <Button HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" />
+        </StackPanel>
+    </Grid>
 </UserControl>

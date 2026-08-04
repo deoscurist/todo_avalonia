@@ -11,16 +11,23 @@ namespace TodoAvalonia.ViewModels;
 public partial class TaskListFormViewModel : ViewModelBase
 {
     public TaskList TaskListObject { get; }
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]                                                                                                                                                                
+    public string ModalTitle { get; set; }
+    
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]     
+    
     [ObservableProperty] public partial string? Title { get; set; }
     [ObservableProperty] public partial DateTimeOffset? ExpiredAt { get; set; } 
     public ObservableCollection<TaskItem> Items { get; } = new();
 
     public TaskListFormViewModel(TaskList? taskList = null)
     {
+        ModalTitle = taskList != null ? "Edit \"{taskList.Title}\"" : "Create a new task";
         TaskListObject = taskList ?? new();
         Title = taskList?.Title;
         ExpiredAt = taskList?.ExpiredAt;
+
+        if (taskList == null)
+            Items.Add(new TaskItem());
         
         foreach (var item in taskList?.TaskItems ?? [])                                                                                                                                                                  
             Items.Add(item);  

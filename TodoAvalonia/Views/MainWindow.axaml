@@ -17,12 +17,31 @@
         ExtendClientAreaTitleBarHeightHint="-1"
         TransparencyLevelHint="Transparent"
         Background="Transparent">
-
-    
+    <Window.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource Caveat}"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontFamily" Value="{StaticResource BadScript}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderBrush" Value="DeepPink"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="Pink"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="FontFamily" Value="{StaticResource Caveat}"/>
+        </Style>
+        <Style Selector="Border.TaskCard">
+            <Setter Property="BorderBrush" Value="DeepPink"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+    </Window.Styles>
     <Panel>
     <Border CornerRadius="8" ClipToBounds="True">
         <Border.Background>
-            <ImageBrush Source="avares://TodoAvalonia/Assets/background.jpg" Stretch="UniformToFill"/>
+            <ImageBrush Source="avares://TodoAvalonia/Assets/bimbo_background.jpg" Stretch="UniformToFill"/>
         </Border.Background>
 
         <Grid RowDefinitions="32,96,*,64">

@@ -7,18 +7,15 @@
              x:Class="TodoAvalonia.Views.TaskCardView"
              x:DataType="models:TaskList">
     <Border
+        Classes="TaskCard"
         Margin="8"
-        Padding="16"
-        CornerRadius="8"
-        BorderBrush="DeepPink"
-        BorderThickness="1"
-        Background="White">
+        Padding="16">
         <Border.Effect>
             <DropShadowEffect Opacity="0.15" Color="Black"></DropShadowEffect>
         </Border.Effect>
         <StackPanel>
-            <TextBlock Margin="0 0 0 10" FontSize="24" FontFamily="{StaticResource Caveat}" TextWrapping="Wrap" Text="{Binding Title}"/>
-            <TextBlock FontFamily="{StaticResource Caveat}" FontSize="12">16.08.1996 12:35</TextBlock>
+            <TextBlock Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding Title}"/>
+            <TextBlock FontSize="12">16.08.1996 12:35</TextBlock>
         </StackPanel>
     </Border>
 </UserControl>

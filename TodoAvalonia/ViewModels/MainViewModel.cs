@@ -12,6 +12,7 @@ public partial class MainViewModel : ViewModelBase
 {
     [ObservableProperty] public partial object? ModalContent { get; set; }
     [ObservableProperty] public partial object? MainContent { get; set; }
+    [ObservableProperty] public partial object? Notification { get; set; }
 
     public MainViewModel()
     {

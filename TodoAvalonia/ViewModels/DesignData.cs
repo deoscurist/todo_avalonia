@@ -9,6 +9,7 @@ public static class DesignData
 {
     public static TaskListIndexViewModel DesignTaskLists { get; } = new(new DesignTaskListRepository());
     public static MainViewModel DesignMain { get; } = new() { MainContent = DesignTaskLists };
+    public static TaskListFormViewModel DesignTaskListForm { get; } = new() { ModalTitle = "Modal Title" };
                                                                                                                                                                                                                    
     private class DesignTaskListRepository : ITaskListRepository                                                                                                                                                 
     {                                                                                                                                                                                                            
