@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="using:TodoAvalonia.Views"
+        xmlns:services="clr-namespace:TodoAvalonia.Services"
+        xmlns:converters="clr-namespace:TodoAvalonia.Converters"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TodoAvalonia.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -17,104 +19,159 @@
         ExtendClientAreaTitleBarHeightHint="-1"
         TransparencyLevelHint="Transparent"
         Background="Transparent">
+    <Window.Resources>
+        <converters:NotificationTypeConverter x:Key="NotificationTypeConverter" />
+    </Window.Resources>
     <Window.Styles>
         <Style Selector="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource Caveat}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
         </Style>
         <Style Selector="Button">
-            <Setter Property="FontFamily" Value="{StaticResource BadScript}"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="BorderBrush" Value="DeepPink"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="Pink"/>
+            <Setter Property="FontFamily" Value="{StaticResource BadScript}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="DeepPink" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="Pink" />
         </Style>
         <Style Selector="TextBox">
-            <Setter Property="FontFamily" Value="{StaticResource Caveat}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
         </Style>
         <Style Selector="Border.TaskCard">
-            <Setter Property="BorderBrush" Value="DeepPink"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="DeepPink" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Background" Value="White" />
+        </Style>
+        <Style Selector="Border.info">
+            <Setter Property="Background" Value="RoyalBlue" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="#30000000" />
+        </Style>
+        <Style Selector="Border.success">
+            <Setter Property="Background" Value="MediumSeaGreen" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="#30000000" />
+        </Style>
+        <Style Selector="Border.error">
+            <Setter Property="Background" Value="PaleVioletRed" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="#30000000" />
+        </Style>
+        <Style Selector="Border.warning">
+            <Setter Property="Background" Value="Coral" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="#30000000" />
         </Style>
     </Window.Styles>
     <Panel>
-    <Border CornerRadius="8" ClipToBounds="True">
-        <Border.Background>
-            <ImageBrush Source="avares://TodoAvalonia/Assets/bimbo_background.jpg" Stretch="UniformToFill"/>
-        </Border.Background>
+        <Border CornerRadius="8" ClipToBounds="True">
+            <Border.Background>
+                <ImageBrush Source="avares://TodoAvalonia/Assets/bimbo_background.jpg" Stretch="UniformToFill" />
+            </Border.Background>
 
-        <Grid RowDefinitions="32,96,*,64">
-        <Border Grid.Row="0" Padding="8 0" Background="#50FFFFFF" BorderBrush="#70FFFFFF" BorderThickness="1" PointerPressed="TitleBar_PointerPressed">
-            <DockPanel LastChildFill="False">                                                                                                                                                                            
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Spacing="4">
-                    <Button Width="24" 
-                            Height="24" 
-                            Padding="0" 
-                            FontSize="10" 
-                            HorizontalContentAlignment="Center" 
-                            VerticalContentAlignment="Center" 
-                            Background="#30FF0000"
-                            BorderBrush="#70FF0000"
-                            BorderThickness="1"
-                            Foreground="Black" 
-                            Content="✕" Click="Close_Click"/>   
-                    <Button Width="24" 
-                            Height="24" 
-                            Padding="0" 
-                            FontSize="10" 
-                            HorizontalContentAlignment="Center" 
-                            VerticalContentAlignment="Center" 
-                            Background="#30FFAA00"
-                            BorderBrush="#70FFAA00"
-                            BorderThickness="1"
-                            Foreground="Black" 
-                            Content="□" Click="Maximize_Click"/>  
-                    <Button Width="24" 
-                            Height="24" 
-                            Padding="0" 
-                            FontSize="10" 
-                            HorizontalContentAlignment="Center" 
-                            VerticalContentAlignment="Center" 
-                            Background="#3000FF00"
-                            BorderBrush="#7000FF00"
-                            BorderThickness="1"
-                            Foreground="Black" 
-                            Content="—" Click="Minimize_Click"/>                                                                                                                                                         
-                </StackPanel>                                                                                                                                                                                            
-            </DockPanel>                                                                                                                                                                                                 
-        </Border>  
-        
-        <DockPanel Grid.Row="1">
-            <TextBlock
-                       Foreground="DeepPink"
-                       Text="My Happy Little Todo List"
-                       FontFamily="{StaticResource Birthstone}"
-                       FontSize="48"
-                       Margin="16"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center">
-                <TextBlock.Effect>
-                    <DropShadowEffect Color="Bisque"></DropShadowEffect>
-                </TextBlock.Effect>
-            </TextBlock>
-        </DockPanel>
+            <Grid RowDefinitions="32,96,*,64">
+                <Border Grid.Row="0" Padding="8 0" Background="#50FFFFFF" BorderBrush="#70FFFFFF" BorderThickness="1"
+                        PointerPressed="TitleBar_PointerPressed">
+                    <DockPanel LastChildFill="False">
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Spacing="4">
+                            <Button Width="24"
+                                    Height="24"
+                                    Padding="0"
+                                    FontSize="10"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Background="#30FF0000"
+                                    BorderBrush="#70FF0000"
+                                    BorderThickness="1"
+                                    Foreground="Black"
+                                    Content="✕" Click="Close_Click" />
+                            <Button Width="24"
+                                    Height="24"
+                                    Padding="0"
+                                    FontSize="10"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Background="#30FFAA00"
+                                    BorderBrush="#70FFAA00"
+                                    BorderThickness="1"
+                                    Foreground="Black"
+                                    Content="□" Click="Maximize_Click" />
+                            <Button Width="24"
+                                    Height="24"
+                                    Padding="0"
+                                    FontSize="10"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Background="#3000FF00"
+                                    BorderBrush="#7000FF00"
+                                    BorderThickness="1"
+                                    Foreground="Black"
+                                    Content="—" Click="Minimize_Click" />
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
 
-        <ContentControl Grid.Row="2" Content="{Binding MainContent}" />
-        
-        <DockPanel Grid.Row="3" Margin="0 16">
-            <TextBlock 
-                FontFamily="{StaticResource BadScript}"
-                FontSize="18"
-                
-                Foreground="DeepPink"
-                Text="Copyright. Made by @deoscurist"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"/>
-        </DockPanel>
-    </Grid>
-    </Border>
-    <views:ModalLayoutView />
+                <DockPanel Grid.Row="1">
+                    <TextBlock
+                        Foreground="DeepPink"
+                        Text="My Happy Little Todo List"
+                        FontFamily="{StaticResource Birthstone}"
+                        FontSize="48"
+                        Margin="16"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="Bisque"></DropShadowEffect>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </DockPanel>
+
+                <ContentControl Grid.Row="2" Content="{Binding MainContent}" />
+
+                <DockPanel Grid.Row="3" Margin="0 16">
+                    <TextBlock
+                        FontFamily="{StaticResource BadScript}"
+                        FontSize="18"
+
+                        Foreground="DeepPink"
+                        Text="Copyright. Made by @deoscurist"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                </DockPanel>
+            </Grid>
+        </Border>
+        <views:ModalLayoutView />
+
+        <!-- Notification overlay -->
+        <ItemsControl x:Name="NotificationControl" ItemsSource="{Binding Notifications.Notifications}"
+                      HorizontalAlignment="Right" VerticalAlignment="Top"
+                      Margin="16" MaxWidth="480">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border converters:ClassBinding.Classes="{Binding Type, Converter={StaticResource NotificationTypeConverter}}" CornerRadius="8" Padding="12,8"
+                            Margin="0,0,0,8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel>
+                                <TextBlock FontSize="24" Text="{Binding Title}" TextWrapping="Wrap"
+                                           Foreground="White" VerticalAlignment="Center" />
+                                <TextBlock FontSize="18" Text="{Binding Message}" TextWrapping="Wrap"
+                                           Foreground="White" VerticalAlignment="Center" IsVisible="{Binding HasMessage}"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" Content="x"
+                                    Background="Transparent" Foreground="Gray"
+                                    Padding="4,2" Margin="8,0,0,0"
+                                    Command="{Binding #NotificationControl.((vm:MainViewModel)DataContext).Notifications.DismissCommand}"
+                                    CommandParameter="{Binding}" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
     </Panel>
 
 </Window>

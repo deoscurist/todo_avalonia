@@ -3,9 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:TodoAvalonia.Models"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="200"
              x:Class="TodoAvalonia.Views.TaskCardView"
-             x:DataType="models:TaskList">
+             d:DataContext="{x:Static vm:DesignData.DesignTaskList}"
+             x:DataType="vm:TaskCardViewModel">
     <Border
         Classes="TaskCard"
         Margin="8"
@@ -13,9 +15,27 @@
         <Border.Effect>
             <DropShadowEffect Opacity="0.15" Color="Black"></DropShadowEffect>
         </Border.Effect>
-        <StackPanel>
-            <TextBlock Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding Title}"/>
-            <TextBlock FontSize="12">16.08.1996 12:35</TextBlock>
-        </StackPanel>
+        <Grid RowDefinitions="32,*">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Button Content="|">
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuItem Header="Edit"/>
+                            <MenuItem
+                                Command="{Binding DeleteCommand}"
+                                CommandParameter="{Binding TaskListObject.Id}"
+                                Header="Delete"/>        
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Grid.Row="1">
+                <TextBlock Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding TaskListObject.Title}" />
+                <Grid ColumnDefinitions="*,Auto,*">
+                    <TextBlock FontSize="12" Text="{Binding TaskListObject.Status}" />
+                    <TextBlock HorizontalAlignment="Right" Grid.Column="2" FontSize="12" Text="{Binding TaskListObject.ExpiredAt}" />
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Border>
 </UserControl>

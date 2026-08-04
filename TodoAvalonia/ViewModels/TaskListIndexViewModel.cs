@@ -2,14 +2,22 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Messaging;
 using TodoAvalonia.Data;
 using TodoAvalonia.Messages;
-using TodoAvalonia.Models;
 
 namespace TodoAvalonia.ViewModels;
 
-public class TaskListIndexViewModel : ViewModelBase
+public partial class TaskListIndexViewModel : ViewModelBase
 {
-    public ObservableCollection<TaskList> TaskLists { get; set; } = new();
+    private readonly ITaskListRepository _repository;
+    public ObservableCollection<TaskCardViewModel> TaskLists { get; set; } = new();
     public ObservableCollection<object> ListItems { get; } = new();
+    
+    private void RefreshLists()
+    {
+        TaskLists.Clear();
+        foreach (var taskList in _repository.GetAll())
+            TaskLists.Add(new TaskCardViewModel(taskList));
+        CollectListItems();
+    }
     
     private void CollectListItems()
     {
@@ -22,19 +30,21 @@ public class TaskListIndexViewModel : ViewModelBase
 
     public TaskListIndexViewModel(ITaskListRepository repository)
     {
-        foreach (var taskList in repository.GetAll())                                                                                                                                                            
-            TaskLists.Add(taskList); 
+        _repository = repository;
+        RefreshLists();
         
-        CollectListItems();
         TaskLists.CollectionChanged += (_, _) => CollectListItems();
         
         WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListSavedMessage>(this, (r, m) =>                                                                                                         
         {                                                                                                                                                                                                        
-            repository.Save(m.List);                                                                                                                                                                             
-            r.TaskLists.Clear();                                                                                                                                                                                 
-                                                                                                                                                                                                                   
-            foreach (var taskList in repository.GetAll())                                                                                                                                                        
-                r.TaskLists.Add(taskList);                                                                                                                                                                       
+            repository.Save(m.List);
+            r.RefreshLists(); 
         });    
+        
+        WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListDeleteMessage>(this, (r, m) =>
+        {
+            repository.Delete(m.Id);
+            r.RefreshLists();                                                                                                                                                                 
+        });   
     }
 }

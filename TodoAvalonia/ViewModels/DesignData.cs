@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using TodoAvalonia.Data;
 using TodoAvalonia.Models;
 
@@ -8,6 +9,16 @@ namespace TodoAvalonia.ViewModels;
 public static class DesignData
 {
     public static TaskListIndexViewModel DesignTaskLists { get; } = new(new DesignTaskListRepository());
+    public static TaskList DesignTaskList { get; } = new()
+    {
+        Title = "Task title",
+        CreatedAt = DateTime.UtcNow,
+        ExpiredAt = DateTime.UtcNow,
+        TaskItems = [                                                                                                                                                                                                
+            new TaskItem { Id = Guid.NewGuid(), Content = "Buy milk" },                                                                                                                                  
+            new TaskItem { Id = Guid.NewGuid(), Content = "Buy bread", IsDone = true }                                                                                                                   
+        ]
+    };
     public static MainViewModel DesignMain { get; } = new() { MainContent = DesignTaskLists };
     public static TaskListFormViewModel DesignTaskListForm { get; } = new() { ModalTitle = "Modal Title" };
                                                                                                                                                                                                                    

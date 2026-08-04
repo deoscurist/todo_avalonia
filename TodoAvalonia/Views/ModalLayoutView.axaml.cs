@@ -14,6 +14,6 @@ public partial class ModalLayoutView : UserControl
         InitializeComponent();
     }
     
-    private void Close_Click(object? sender, RoutedEventArgs e) =>                                                                                                                                                   
-        WeakReferenceMessenger.Default.Send(new CloseModalMessage());  
+    private void Close_Click(object? sender, RoutedEventArgs e) => 
+        WeakReferenceMessenger.Default.Send(new CloseModalMessage());
 }

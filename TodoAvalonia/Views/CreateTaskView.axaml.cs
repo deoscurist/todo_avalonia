@@ -15,7 +15,9 @@ public partial class CreateTaskView : UserControl
     {
         InitializeComponent();
     }
-    
-    private void Border_PointerPressed(object? sender, PointerPressedEventArgs e) =>                                                                                                                             
-        (DataContext as CreateTaskViewModel)?.OpenCommand.Execute(null); 
+
+    private void Border_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        (DataContext as CreateTaskViewModel)?.OpenCommand.Execute(null);
+    }                                                                                                                             
 }

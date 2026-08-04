@@ -17,9 +17,8 @@
         <Border.Effect>
             <DropShadowEffect Opacity="0.15" Color="Black"></DropShadowEffect>
         </Border.Effect>
-        <WrapPanel Orientation="Horizontal" ItemsAlignment="Center">
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 0 8 0" FontSize="24" FontFamily="{StaticResource Caveat}">+</TextBlock>
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource Caveat}" FontSize="24">Add task</TextBlock>
+        <WrapPanel Orientation="Horizontal" ItemsAlignment="Center" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource Caveat}" FontSize="24">+ Add task</TextBlock>
         </WrapPanel>
     </Border>
 </UserControl>

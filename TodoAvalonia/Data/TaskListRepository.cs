@@ -35,8 +35,8 @@ public class TaskListRepository(LiteDatabase db) : ITaskListRepository
         if (!string.IsNullOrEmpty(search))
         {
             return _taskLists.Find(taskList =>
-                taskList.Title.Contains(search) ||
-                taskList.TaskItems.Any(item => item.Content.Contains(search)));
+                taskList.Title != null && (taskList.Title.Contains(search) ||
+                                           taskList.TaskItems.Any(item => item.Content != null && item.Content.Contains(search))));
         }
 
         return _taskLists.FindAll();

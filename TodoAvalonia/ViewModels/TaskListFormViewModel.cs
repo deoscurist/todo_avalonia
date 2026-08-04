@@ -44,6 +44,7 @@ public partial class TaskListFormViewModel : ViewModelBase
         TaskListObject.ExpiredAt = ExpiredAt?.UtcDateTime;
         TaskListObject.TaskItems = Items;
             
+        WeakReferenceMessenger.Default.Send(new NotificationMessage("Task has been saved"));
         WeakReferenceMessenger.Default.Send(new TaskListSavedMessage(TaskListObject));
         WeakReferenceMessenger.Default.Send(new CloseModalMessage());
     }
