@@ -14,11 +14,14 @@ public partial class TaskCardViewModel : ViewModelBase
     {
         TaskListObject = taskList;
     }
+    
+    [RelayCommand]
+    private void Edit() => WeakReferenceMessenger.Default.Send(new ShowModalMessage(new TaskListFormViewModel(TaskListObject)));
 
     [RelayCommand]
-    private void Delete(Guid id)
+    private void Delete()
     {
         WeakReferenceMessenger.Default.Send(new NotificationMessage("Task has been deleted"));
-        WeakReferenceMessenger.Default.Send(new TaskListDeleteMessage(id));   
+        WeakReferenceMessenger.Default.Send(new TaskListDeleteMessage(TaskListObject.Id));   
     }
 }

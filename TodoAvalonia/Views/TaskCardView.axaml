@@ -20,11 +20,12 @@
                 <Button Content="|">
                     <Button.Flyout>
                         <MenuFlyout>
-                            <MenuItem Header="Edit"/>
+                            <MenuItem
+                                Command="{Binding EditCommand}"
+                                Header="Edit"/>
                             <MenuItem
                                 Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding TaskListObject.Id}"
-                                Header="Delete"/>        
+                                Header="Delete"/>
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
