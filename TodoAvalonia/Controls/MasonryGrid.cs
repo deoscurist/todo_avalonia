@@ -5,20 +5,20 @@ using Avalonia.Controls;
 
 namespace TodoAvalonia.Controls;
 
-public class AutoFitPanel : Panel
+public class MasonryGrid : Panel
 {
     public static readonly StyledProperty<double> MinItemWidthProperty =
-        AvaloniaProperty.Register<AutoFitPanel, double>(nameof(MinItemWidth), 100);
+        AvaloniaProperty.Register<MasonryGrid, double>(nameof(MinItemWidth), 100);
 
     public static readonly StyledProperty<double> ColumnSpacingProperty =
-        AvaloniaProperty.Register<AutoFitPanel, double>(nameof(ColumnSpacing));
+        AvaloniaProperty.Register<MasonryGrid, double>(nameof(ColumnSpacing));
 
     public static readonly StyledProperty<double> RowSpacingProperty =
-        AvaloniaProperty.Register<AutoFitPanel, double>(nameof(RowSpacing));
-
-    static AutoFitPanel()
+        AvaloniaProperty.Register<MasonryGrid, double>(nameof(RowSpacing));
+    
+    static MasonryGrid()
     {
-        AffectsMeasure<AutoFitPanel>(MinItemWidthProperty, ColumnSpacingProperty, RowSpacingProperty);
+        AffectsMeasure<MasonryGrid>(MinItemWidthProperty, ColumnSpacingProperty, RowSpacingProperty);
     }
 
     public double MinItemWidth

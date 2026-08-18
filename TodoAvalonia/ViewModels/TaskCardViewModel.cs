@@ -1,12 +1,13 @@
 using System;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using TodoAvalonia.Controls;
 using TodoAvalonia.Messages;
 using TodoAvalonia.Models;
 
 namespace TodoAvalonia.ViewModels;
 
-public partial class TaskCardViewModel : ViewModelBase
+public partial class TaskCardViewModel : ViewModelBase, IReorderable
 {
     public TaskList TaskListObject { get; set; } = new();
     

@@ -13,6 +13,13 @@ public class TaskListRepository(LiteDatabase db) : ITaskListRepository
     
     public bool Save(TaskList taskList)
     {
+        var isNew = !_taskLists.Exists(t => t.Id == taskList.Id);                                                                                                                                                    
+        if (isNew)                                                                                                                                                                                                   
+        {                                                                                                                                                                                                            
+            var maxOrder = _taskLists.FindAll().Select(t => (int?)t.Order).Max() ?? -1;                                                                                                                              
+            taskList.Order = maxOrder + 1;                                                                                                                                                                           
+        } 
+        
         _taskLists.Upsert(taskList);
             
         return true;
@@ -32,13 +39,19 @@ public class TaskListRepository(LiteDatabase db) : ITaskListRepository
 
     public IEnumerable<TaskList> GetAll(string? search = null)
     {
+        IEnumerable<TaskList> results; 
+        
         if (!string.IsNullOrEmpty(search))
         {
-            return _taskLists.Find(taskList =>
+            results = _taskLists.Find(taskList =>
                 taskList.Title != null && (taskList.Title.Contains(search) ||
                                            taskList.TaskItems.Any(item => item.Content != null && item.Content.Contains(search))));
         }
+        else
+        {
+            results = _taskLists.FindAll();
+        }
 
-        return _taskLists.FindAll();
+        return results.OrderBy(taskList => taskList.Order);
     }
 }

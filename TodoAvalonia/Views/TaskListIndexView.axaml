@@ -20,7 +20,7 @@
         <ItemsControl Margin="16 48" ItemsSource="{Binding ListItems}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <controls:AutoFitPanel MinItemWidth="256" />
+                    <controls:ReorderableMasonryGrid MinItemWidth="256" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
