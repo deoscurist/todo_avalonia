@@ -132,16 +132,22 @@
 
                 <ContentControl Grid.Row="2" Content="{Binding MainContent}" />
 
-                <DockPanel Grid.Row="3" Margin="0 16">
+                <Grid ColumnDefinitions="*,*,*" Grid.Row="3" Margin="16 ">
                     <TextBlock
                         FontFamily="{StaticResource BadScript}"
                         FontSize="18"
-
                         Foreground="DeepPink"
                         Text="Copyright. Made by @deoscurist"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Center" />
-                </DockPanel>
+                        HorizontalAlignment="Left" />                    
+                    <TextBlock Grid.Column="2"
+                        FontFamily="{StaticResource BadScript}"
+                        FontSize="18"
+                        Foreground="DeepPink"
+                        Text="v0.0.1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right" />
+                </Grid>
             </Grid>
         </Border>
         <views:ModalLayoutView />
