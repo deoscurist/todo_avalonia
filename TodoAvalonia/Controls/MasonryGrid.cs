@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Media.Transformation;
 
 namespace TodoAvalonia.Controls;
 
@@ -15,6 +19,16 @@ public class MasonryGrid : Panel
 
     public static readonly StyledProperty<double> RowSpacingProperty =
         AvaloniaProperty.Register<MasonryGrid, double>(nameof(RowSpacing));
+
+    private Dictionary<Control, Point> _itemsPositions = new Dictionary<Control, Point>();
+
+    private Transitions _baseTransform = [
+        new TransformOperationsTransition
+        {
+            Property = Visual.RenderTransformProperty,
+            Duration = TimeSpan.FromMilliseconds(200),
+        }
+        ];
     
     static MasonryGrid()
     {
@@ -107,9 +121,33 @@ public class MasonryGrid : Panel
             var x = columnIndex * (itemWidth + ColumnSpacing);
             var y = columnHeights[columnIndex];
 
-            child.Arrange(new Rect(x, y, itemWidth, child.DesiredSize.Height));
+            child.Transitions = null;
+
+            if (!_itemsPositions.TryGetValue(child, out var position))
+            {
+                position = new Point(x, y);
+                _itemsPositions[child] = position;
+            }
+
+            var destination = new Rect(x, y, itemWidth, child.DesiredSize.Height);
+            
+            child.Arrange(destination);
+
+            if (position != destination.Position)
+            {
+                Vector direction = position - destination.Position;
+                
+                child.RenderTransform = TransformOperations.Parse(
+                    $"translate({direction.X.ToString(CultureInfo.InvariantCulture)}px,{direction.Y.ToString(CultureInfo.InvariantCulture)}px)"
+                    );
+
+                child.Transitions = _baseTransform;
+                
+                child.RenderTransform = TransformOperations.Parse("translate(0px,0px)");
+            }
 
             columnHeights[columnIndex] += child.DesiredSize.Height + RowSpacing;
+            _itemsPositions[child] = destination.Position;
         }
 
         return finalSize;
