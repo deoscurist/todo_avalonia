@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using TodoAvalonia.Data;
 using TodoAvalonia.Messages;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace TodoAvalonia.ViewModels;
 
@@ -56,13 +57,12 @@ public partial class TaskListIndexViewModel : ViewModelBase
         
         WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListReorderMessage>(this, (r, m) =>
         {
-            if (m.Dragged is not TaskCardViewModel dragged || m.Target is not TaskCardViewModel target) return;
+            if (m.Dragged is not TaskCardViewModel dragged) return;
 
             var oldIndex = r.TaskLists.IndexOf(dragged);
-            var newIndex = r.TaskLists.IndexOf(target);
-            if (oldIndex < 0 || newIndex < 0 || oldIndex == newIndex) return;
-            
-            r.TaskLists.Move(oldIndex, newIndex);
+            if (oldIndex < 0 || oldIndex == m.NewIndex) return;
+
+            r.TaskLists.Move(oldIndex, m.NewIndex);
         });
         
         WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListsReorderedMessage>(this, (r, m) =>
@@ -70,8 +70,9 @@ public partial class TaskListIndexViewModel : ViewModelBase
             for (var i = 0; i < r.TaskLists.Count; i++)
             {
                 r.TaskLists[i].TaskListObject.Order = i;
-                repository.Save(r.TaskLists[i].TaskListObject);
             }
+
+            repository.SaveAll(r.TaskLists.Select(t => t.TaskListObject));
         });
     }
 }

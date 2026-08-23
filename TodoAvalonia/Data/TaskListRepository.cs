@@ -10,6 +10,29 @@ public class TaskListRepository(LiteDatabase db) : ITaskListRepository
 {
     private readonly LiteDatabase _db = db;
     private readonly ILiteCollection<TaskList> _taskLists = db.GetCollection<TaskList>("tasklist");
+
+    public bool SaveAll(IEnumerable<TaskList> taskLists)
+    {
+        _db.BeginTrans();
+
+        try
+        {
+            foreach (var taskList in taskLists)
+            {
+                _taskLists.Upsert(taskList);
+            }
+        }
+        catch (Exception)
+        {
+            _db.Rollback();
+
+            return false;
+        }
+        
+        _db.Commit();
+        
+        return true;
+    }
     
     public bool Save(TaskList taskList)
     {

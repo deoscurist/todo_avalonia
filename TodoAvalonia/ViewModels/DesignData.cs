@@ -22,8 +22,9 @@ public static class DesignData
     public static MainViewModel DesignMain { get; } = new() { MainContent = DesignTaskLists };
     public static TaskListFormViewModel DesignTaskListForm { get; } = new() { ModalTitle = "Modal Title" };
                                                                                                                                                                                                                    
-    private class DesignTaskListRepository : ITaskListRepository                                                                                                                                                 
-    {                                                                                                                                                                                                            
+    private class DesignTaskListRepository : ITaskListRepository
+    {
+        public bool SaveAll(IEnumerable<TaskList> taskLists) => true;                                                                                                                                                             
         public bool Save(TaskList taskList) => true;                                                                                                                                                             
         public bool Delete(Guid id) => true;                                                                                                                                                                     
         public TaskList? Get(Guid id) => null;                                                                                                                                                            

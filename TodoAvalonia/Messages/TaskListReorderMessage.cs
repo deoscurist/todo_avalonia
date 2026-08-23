@@ -1,3 +1,3 @@
 namespace TodoAvalonia.Messages;
 
-public record TaskListReorderMessage(object Dragged, object Target);
+public record TaskListReorderMessage(object Dragged, int NewIndex);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -16,6 +17,7 @@ public class ReorderableMasonryGrid : MasonryGrid
     private object? _draggedData;
     private Point _grabOffset;
     private bool _dragging;
+    private List<Control>? _previewOrder;
 
     public ReorderableMasonryGrid()
     {
@@ -63,18 +65,23 @@ public class ReorderableMasonryGrid : MasonryGrid
         {
             if (distance <= 5) return;
             _dragging = true;
+            _previewOrder = Children.Where(c => c.DataContext is IReorderable).ToList();
+            draggedChild.Transitions = null;
         }
 
         draggedChild.RenderTransform = new TranslateTransform(delta.X, delta.Y);
         draggedChild.ZIndex = 1;
 
-        foreach (var child in Children)
+        foreach (var child in _previewOrder!)
         {
             if (child == draggedChild) continue;
-            if (child.DataContext is not IReorderable) continue;
             if (!child.Bounds.Contains(pointerInPanel)) continue;
 
-            WeakReferenceMessenger.Default.Send(new TaskListReorderMessage(_draggedData, child.DataContext!));
+            var draggedIndex = _previewOrder.IndexOf(draggedChild);
+            var targetIndex = _previewOrder.IndexOf(child);
+            _previewOrder.RemoveAt(draggedIndex);
+            _previewOrder.Insert(targetIndex, draggedChild);
+            InvalidateArrange();
 
             break;
         }
@@ -91,20 +98,36 @@ public class ReorderableMasonryGrid : MasonryGrid
             var draggedChild = Children.FirstOrDefault(c => c.DataContext == _draggedData);
             if (draggedChild is not null)
             {
+                if (draggedChild.RenderTransform is TranslateTransform t)
+                    SetTrackedPosition(draggedChild, draggedChild.Bounds.Position + new Vector(t.X, t.Y));
+
                 draggedChild.RenderTransform = null;
                 draggedChild.ZIndex = 0;
             }
 
+            var newIndex = draggedChild is not null ? _previewOrder!.IndexOf(draggedChild) : -1;
+            if (newIndex >= 0)
+                WeakReferenceMessenger.Default.Send(new TaskListReorderMessage(_draggedData, newIndex));
+
             WeakReferenceMessenger.Default.Send(new TaskListsReorderedMessage());
         }
 
+        _previewOrder = null;
         _draggedData = null;
         _dragging = false;
         InvalidateArrange();
     }
 
-    protected override bool CanAnimate(Control element)
+    protected override IReadOnlyList<Control> GetArrangeOrder()
     {
-        return !_dragging || element.DataContext != _draggedData;
+        if (!_dragging || _previewOrder is null) return base.GetArrangeOrder();
+
+        var fixedChildren = Children.Where(c => c.DataContext is not IReorderable);
+        return fixedChildren.Concat(_previewOrder).ToList();
+    }
+
+    protected override bool ShouldArrangeChild(Control child)
+    {
+        return !(_dragging && child.DataContext == _draggedData);
     }
 }

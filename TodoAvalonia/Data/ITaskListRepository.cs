@@ -6,6 +6,7 @@ namespace TodoAvalonia.Data;
 
 public interface ITaskListRepository
 {
+    bool SaveAll(IEnumerable<TaskList> taskLists);
     bool Save(TaskList taskList);
     bool Delete(Guid id);
     TaskList? Get(Guid id);

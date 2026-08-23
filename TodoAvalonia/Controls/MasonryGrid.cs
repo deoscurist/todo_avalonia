@@ -20,7 +20,7 @@ public class MasonryGrid : Panel
     public static readonly StyledProperty<double> RowSpacingProperty =
         AvaloniaProperty.Register<MasonryGrid, double>(nameof(RowSpacing));
 
-    private Dictionary<Control, Point> _itemsPositions = new Dictionary<Control, Point>();
+    private Dictionary<object, Point> _itemsPositions = new Dictionary<object, Point>();
 
     private Transitions _baseTransform = [
         new TransformOperationsTransition
@@ -113,6 +113,14 @@ public class MasonryGrid : Panel
         return true;
     }
 
+    protected virtual IReadOnlyList<Control> GetArrangeOrder() => Children;
+
+    protected virtual bool ShouldArrangeChild(Control child) => true;
+
+    protected void SetTrackedPosition(Control child, Point position) => _itemsPositions[GetPositionKey(child)] = position;
+
+    private static object GetPositionKey(Control child) => child.DataContext ?? child;
+
     protected override Size ArrangeOverride(Size finalSize)
     {
         var columns = GetColumnCount(finalSize.Width);
@@ -120,39 +128,45 @@ public class MasonryGrid : Panel
 
         var columnHeights = new double[columns];
 
-        foreach (var child in Children)
+        foreach (var child in GetArrangeOrder())
         {
             var columnIndex = GetShortestColumnIndex(columnHeights);
             var x = columnIndex * (itemWidth + ColumnSpacing);
             var y = columnHeights[columnIndex];
 
-            if (!_itemsPositions.TryGetValue(child, out var position))
+            if (ShouldArrangeChild(child))
             {
-                position = new Point(x, y);
-                _itemsPositions[child] = position;
-            }
+                var key = GetPositionKey(child);
 
-            var destination = new Rect(x, y, itemWidth, child.DesiredSize.Height);
-            
-            child.Arrange(destination);
+                if (!_itemsPositions.TryGetValue(key, out var position))
+                {
+                    position = new Point(x, y);
+                    _itemsPositions[key] = position;
+                }
 
-            if (position != destination.Position && CanAnimate(child))
-            {
-                child.Transitions = null;
-                
-                Vector direction = position - destination.Position;
-                
-                child.RenderTransform = TransformOperations.Parse(
-                    $"translate({direction.X.ToString(CultureInfo.InvariantCulture)}px,{direction.Y.ToString(CultureInfo.InvariantCulture)}px)"
-                    );
+                var destination = new Rect(x, y, itemWidth, child.DesiredSize.Height);
 
-                child.Transitions = _baseTransform;
-                
-                child.RenderTransform = TransformOperations.Parse("translate(0px,0px)");
+                child.Arrange(destination);
+
+                if (position != destination.Position && CanAnimate(child))
+                {
+                    child.Transitions = null;
+
+                    Vector direction = position - destination.Position;
+
+                    child.RenderTransform = TransformOperations.Parse(
+                        $"translate({direction.X.ToString(CultureInfo.InvariantCulture)}px,{direction.Y.ToString(CultureInfo.InvariantCulture)}px)"
+                        );
+
+                    child.Transitions = _baseTransform;
+
+                    child.RenderTransform = TransformOperations.Parse("translate(0px,0px)");
+                }
+
+                _itemsPositions[key] = destination.Position;
             }
 
             columnHeights[columnIndex] += child.DesiredSize.Height + RowSpacing;
-            _itemsPositions[child] = destination.Position;
         }
 
         return finalSize;
