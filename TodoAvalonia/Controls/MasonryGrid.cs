@@ -108,6 +108,11 @@ public class MasonryGrid : Panel
         return new Size(width, Math.Max(0, totalHeight));
     }
 
+    protected virtual bool CanAnimate(Control element)
+    {
+        return true;
+    }
+
     protected override Size ArrangeOverride(Size finalSize)
     {
         var columns = GetColumnCount(finalSize.Width);
@@ -121,8 +126,6 @@ public class MasonryGrid : Panel
             var x = columnIndex * (itemWidth + ColumnSpacing);
             var y = columnHeights[columnIndex];
 
-            child.Transitions = null;
-
             if (!_itemsPositions.TryGetValue(child, out var position))
             {
                 position = new Point(x, y);
@@ -133,8 +136,10 @@ public class MasonryGrid : Panel
             
             child.Arrange(destination);
 
-            if (position != destination.Position)
+            if (position != destination.Position && CanAnimate(child))
             {
+                child.Transitions = null;
+                
                 Vector direction = position - destination.Position;
                 
                 child.RenderTransform = TransformOperations.Parse(

@@ -102,4 +102,9 @@ public class ReorderableMasonryGrid : MasonryGrid
         _dragging = false;
         InvalidateArrange();
     }
+
+    protected override bool CanAnimate(Control element)
+    {
+        return !_dragging || element.DataContext != _draggedData;
+    }
 }
