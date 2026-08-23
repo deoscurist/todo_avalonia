@@ -3,43 +3,38 @@ set -e
 
 APP_NAME="TodoAvalonia"
 BUNDLE_ID="com.deoscurist.todoavalonia"
-VERSION="1.0.0"
+CSPROJ="./TodoAvalonia.csproj"
 OUTPUT_DIR="$(pwd)/Publish"
 
-# --- Проверяем аргумент ---
-ARCH="${1:-x64}"   # по умолчанию Intel, можно arm64
+# --- Версия берётся из .csproj (<Version>...</Version>) ---
+VERSION=$(dotnet msbuild "$CSPROJ" -nologo -getProperty:Version)
+echo "📦 Версия проекта: $VERSION"
 
-if [[ "$ARCH" == "arm64" ]]; then
-    BUILD_DIR="./bin/Release/net10.0/osx-arm64"
-    DMG_SUFFIX="-arm64"
-elif [[ "$ARCH" == "x64" ]]; then
-    BUILD_DIR="./bin/Release/net10.0/osx-x64"
-    DMG_SUFFIX="-x64"
-else
-    echo "❌ Неверная архитектура. Используйте: x64 или arm64"
-    exit 1
-fi
+ARCHS=("x64" "arm64")
 
-# --- Проверяем, что папка существует ---
-if [ ! -d "$BUILD_DIR" ]; then
-    echo "❌ Папка $BUILD_DIR не найдена."
-    echo "Сначала собери проект: dotnet publish -c Release -r osx-$ARCH --self-contained -o $BUILD_DIR"
-    exit 1
-fi
+for ARCH in "${ARCHS[@]}"; do
+    echo ""
+    echo "=== 🍎 Архитектура: $ARCH ==="
 
-echo "✅ Сборка для $ARCH: $BUILD_DIR"
+    PUBLISH_DIR="./bin/Release/net10.0/osx-$ARCH/publish"
+    DMG_SUFFIX="-$ARCH"
 
-# --- Создаём временную структуру .app ---
-TMP_DIR=$(mktemp -d)
-APP_BUNDLE="$TMP_DIR/$APP_NAME.app"
-DMG_FILE="$OUTPUT_DIR/${APP_NAME}${DMG_SUFFIX}.dmg"
+    # --- Сборка ---
+    echo "🔨 dotnet publish для $ARCH..."
+    dotnet publish -c Release -r "osx-$ARCH" --self-contained -o "$PUBLISH_DIR"
 
-mkdir -p "$APP_BUNDLE/Contents/MacOS" "$APP_BUNDLE/Contents/Resources"
-cp -R "$BUILD_DIR"/* "$APP_BUNDLE/Contents/MacOS/"
-chmod 755 "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+    # --- Временная структура: .app + симлинк на /Applications рядом ---
+    TMP_DIR=$(mktemp -d)
+    STAGE_DIR="$TMP_DIR/stage"
+    APP_BUNDLE="$STAGE_DIR/$APP_NAME.app"
+    DMG_FILE="$OUTPUT_DIR/${APP_NAME}-${VERSION}${DMG_SUFFIX}.dmg"
 
-# --- Info.plist (полный) ---
-cat > "$APP_BUNDLE/Contents/Info.plist" <<EOF
+    mkdir -p "$APP_BUNDLE/Contents/MacOS" "$APP_BUNDLE/Contents/Resources"
+    cp -R "$PUBLISH_DIR"/* "$APP_BUNDLE/Contents/MacOS/"
+    chmod 755 "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+
+    # --- Info.plist ---
+    cat > "$APP_BUNDLE/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -70,23 +65,30 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<EOF
 </plist>
 EOF
 
-# --- Копируем иконку (если есть) ---
-if [ -f "./$APP_NAME.icns" ]; then
-    cp "./$APP_NAME.icns" "$APP_BUNDLE/Contents/Resources/"
-fi
+    # --- Иконка (если есть) ---
+    if [ -f "./$APP_NAME.icns" ]; then
+        cp "./$APP_NAME.icns" "$APP_BUNDLE/Contents/Resources/"
+    fi
 
-# --- ОБЯЗАТЕЛЬНАЯ ПОДПИСЬ ad-hoc (без неё macOS блокирует запуск) ---
-echo "🔏 Подписываю .app (ad-hoc)..."
-codesign --force --deep --sign - "$APP_BUNDLE"
+    # --- ОБЯЗАТЕЛЬНАЯ ПОДПИСЬ ad-hoc (без неё macOS блокирует запуск) ---
+    echo "🔏 Подписываю .app (ad-hoc)..."
+    codesign --force --deep --sign - "$APP_BUNDLE"
 
-# --- Создаём .dmg ---
-mkdir -p "$OUTPUT_DIR"
-hdiutil create -volname "$APP_NAME" -srcfolder "$APP_BUNDLE" -ov "$DMG_FILE" -format UDZO
+    # --- Симлинк на /Applications рядом с .app — для drag-to-install ---
+    ln -s /Applications "$STAGE_DIR/Applications"
 
-# --- Очистка ---
-rm -rf "$TMP_DIR"
+    # --- Создаём .dmg из директории с .app + симлинком ---
+    mkdir -p "$OUTPUT_DIR"
+    hdiutil create -volname "$APP_NAME" -srcfolder "$STAGE_DIR" -ov "$DMG_FILE" -format UDZO
 
-echo "✅ Готово: $DMG_FILE"
+    # --- Очистка ---
+    rm -rf "$TMP_DIR"
+
+    echo "✅ Готово: $DMG_FILE"
+done
+
+echo ""
+echo "🎉 Все архитектуры собраны: $OUTPUT_DIR"
 echo ""
 echo "🔧 Если при открытии пишет 'повреждён', выполни:"
 echo "   xattr -d com.apple.quarantine /путь/к/установщику"

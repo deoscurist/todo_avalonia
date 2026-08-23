@@ -144,7 +144,7 @@
                         FontFamily="{StaticResource BadScript}"
                         FontSize="18"
                         Foreground="DeepPink"
-                        Text="v0.0.1"
+                        Text="{Binding AppVersion}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
                 </Grid>

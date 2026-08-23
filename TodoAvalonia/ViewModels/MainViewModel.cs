@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using TodoAvalonia.Data;
@@ -14,6 +15,10 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] public partial object? ModalContent { get; set; }
     [ObservableProperty] public partial object? MainContent { get; set; }
     public NotificationService Notifications { get; } = new();
+    
+    public string AppVersion { get; } =                                                                                                                                                                              
+        "v" + (Assembly.GetExecutingAssembly()                                                                                                                                                                       
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0"); 
 
     public MainViewModel()
     {
