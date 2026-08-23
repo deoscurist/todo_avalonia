@@ -21,7 +21,7 @@ public partial class TaskListFormViewModel : ViewModelBase
 
     public TaskListFormViewModel(TaskList? taskList = null)
     {
-        ModalTitle = taskList != null ? "Edit \"{taskList.Title}\"" : "Create a new task";
+        ModalTitle = taskList != null ? $"Edit \"{taskList.Title}\"" : "Create a new task";
         TaskListObject = taskList ?? new();
         Title = taskList?.Title;
         ExpiredAt = taskList?.ExpiredAt;
