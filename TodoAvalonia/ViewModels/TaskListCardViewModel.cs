@@ -7,11 +7,11 @@ using TodoAvalonia.Models;
 
 namespace TodoAvalonia.ViewModels;
 
-public partial class TaskCardViewModel : ViewModelBase, IReorderable
+public partial class TaskListCardViewModel : ViewModelBase, IReorderable
 {
     public TaskList TaskListObject { get; set; } = new();
     
-    public TaskCardViewModel(TaskList taskList)
+    public TaskListCardViewModel(TaskList taskList)
     {
         TaskListObject = taskList;
     }

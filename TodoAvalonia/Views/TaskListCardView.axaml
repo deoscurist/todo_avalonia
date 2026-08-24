@@ -5,9 +5,9 @@
              xmlns:models="clr-namespace:TodoAvalonia.Models"
              xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="200"
-             x:Class="TodoAvalonia.Views.TaskCardView"
+             x:Class="TodoAvalonia.Views.TaskListCardView"
              d:DataContext="{x:Static vm:DesignData.DesignTaskList}"
-             x:DataType="vm:TaskCardViewModel">
+             x:DataType="vm:TaskListCardViewModel">
     <Border
         Classes="TaskCard"
         Margin="8"

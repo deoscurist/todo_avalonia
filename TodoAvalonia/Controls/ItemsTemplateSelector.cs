@@ -12,7 +12,7 @@ public class ItemsTemplateSelector : IDataTemplate
     {
         return param switch
         {
-            TaskCardViewModel => new TaskCardView(),
+            TaskListCardViewModel => new TaskListCardView(),
             CreateTaskViewModel => new CreateTaskView(),
             _ => null
         };
@@ -20,6 +20,6 @@ public class ItemsTemplateSelector : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is TaskCardViewModel or CreateTaskViewModel;
+        return data is TaskListCardViewModel or CreateTaskViewModel;
     }
 }

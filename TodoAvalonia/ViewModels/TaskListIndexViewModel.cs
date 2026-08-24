@@ -10,14 +10,14 @@ namespace TodoAvalonia.ViewModels;
 public partial class TaskListIndexViewModel : ViewModelBase
 {
     private readonly ITaskListRepository _repository;
-    public ObservableCollection<TaskCardViewModel> TaskLists { get; set; } = new();
+    public ObservableCollection<TaskListCardViewModel> TaskLists { get; set; } = new();
     public ObservableCollection<object> ListItems { get; } = new();
     
     private void RefreshLists()
     {
         TaskLists.Clear();
         foreach (var taskList in _repository.GetAll())
-            TaskLists.Add(new TaskCardViewModel(taskList));
+            TaskLists.Add(new TaskListCardViewModel(taskList));
         CollectListItems();
     }
     
@@ -57,7 +57,7 @@ public partial class TaskListIndexViewModel : ViewModelBase
         
         WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListReorderMessage>(this, (r, m) =>
         {
-            if (m.Dragged is not TaskCardViewModel dragged) return;
+            if (m.Dragged is not TaskListCardViewModel dragged) return;
 
             var oldIndex = r.TaskLists.IndexOf(dragged);
             if (oldIndex < 0 || oldIndex == m.NewIndex) return;

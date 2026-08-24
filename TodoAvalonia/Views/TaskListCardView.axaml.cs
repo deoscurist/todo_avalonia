@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace TodoAvalonia.Views;
 
-public partial class TaskCardView : UserControl
+public partial class TaskListCardView : UserControl
 {
-    public TaskCardView()
+    public TaskListCardView()
     {
         InitializeComponent();
     }
