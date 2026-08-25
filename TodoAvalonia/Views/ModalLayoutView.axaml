@@ -30,7 +30,7 @@
             </Border.Effect>
             <Grid>
                 <ContentControl Content="{Binding ModalContent}" />
-                <Button HorizontalAlignment="Right" VerticalAlignment="Top" Content="✕" Click="Close_Click" />
+                <Button Classes="AppButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="✕" Click="Close_Click" />
             </Grid>
         </Border>
     </Grid>

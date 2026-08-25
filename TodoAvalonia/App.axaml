@@ -16,5 +16,6 @@
 
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://TodoAvalonia/Styles/Valentine.axaml" />
     </Application.Styles>
 </Application>

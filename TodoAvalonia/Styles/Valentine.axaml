@@ -1,0 +1,66 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="TextBlock.Heading">
+        <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+    </Style>
+    <Style Selector="TextBlock.Label">
+        <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+    </Style>
+    <Style Selector="TextBlock.Meta">
+        <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+    </Style>
+    <Style Selector="TextBlock.Body">
+        <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+    </Style>
+    <Style Selector="TextBlock.Footer">
+        <Setter Property="FontFamily" Value="{StaticResource BadScript}" />
+        <Setter Property="Foreground" Value="DeepPink" />
+    </Style>
+    <Style Selector="TextBlock.AddPrompt">
+        <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+    </Style>
+    <Style Selector="TextBlock.AppTitle">
+        <Setter Property="FontFamily" Value="{StaticResource Birthstone}" />
+        <Setter Property="Foreground" Value="DeepPink" />
+    </Style>
+    <Style Selector="TextBox.Input">
+        <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+    </Style>
+    <Style Selector="Button.AppButton">
+        <Setter Property="FontFamily" Value="{StaticResource BadScript}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderBrush" Value="DeepPink" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="Pink" />
+    </Style>
+    <Style Selector="Border.TaskCard">
+        <Setter Property="BorderBrush" Value="DeepPink" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Background" Value="White" />
+    </Style>
+    <Style Selector="Border.info">
+        <Setter Property="Background" Value="RoyalBlue" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderBrush" Value="#30000000" />
+    </Style>
+    <Style Selector="Border.success">
+        <Setter Property="Background" Value="MediumSeaGreen" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderBrush" Value="#30000000" />
+    </Style>
+    <Style Selector="Border.error">
+        <Setter Property="Background" Value="PaleVioletRed" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderBrush" Value="#30000000" />
+    </Style>
+    <Style Selector="Border.warning">
+        <Setter Property="Background" Value="Coral" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderBrush" Value="#30000000" />
+    </Style>
+</Styles>

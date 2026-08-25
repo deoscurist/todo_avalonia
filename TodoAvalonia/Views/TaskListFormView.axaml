@@ -10,20 +10,20 @@
     <Grid RowDefinitions="*,48" Margin="0 8">
         <ScrollViewer>
             <StackPanel Spacing="8" Margin="0 8">
-                <TextBlock FontSize="24" Text="{Binding ModalTitle}"/>
+                <TextBlock Classes="Heading" FontSize="24" Text="{Binding ModalTitle}"/>
                 <StackPanel Margin="0 8">
-                    <TextBlock>Title:</TextBlock>
-                    <TextBox PlaceholderText="Type fabulous title..." Text="{Binding Title}" />
+                    <TextBlock Classes="Label">Title:</TextBlock>
+                    <TextBox Classes="Input" PlaceholderText="Type fabulous title..." Text="{Binding Title}" />
                 </StackPanel>
                 <StackPanel Margin="0 8">
-                    <TextBlock>Expired at:</TextBlock>
+                    <TextBlock Classes="Label">Expired at:</TextBlock>
                     <DatePicker SelectedDate="{Binding ExpiredAt}" />
                 </StackPanel>
-                
+
                 <StackPanel Margin="0 8">
                     <Grid ColumnDefinitions="*,auto,auto">
-                        <TextBlock VerticalAlignment="Center" Grid.Column="0">Task List:</TextBlock>
-                        <Button VerticalAlignment="Center" Grid.Column="2" Content="+ Add item" Command="{Binding AddItemCommand}" />
+                        <TextBlock Classes="Label" VerticalAlignment="Center" Grid.Column="0">Task List:</TextBlock>
+                        <Button Classes="AppButton" VerticalAlignment="Center" Grid.Column="2" Content="+ Add item" Command="{Binding AddItemCommand}" />
                     </Grid>
                     <Grid Margin="0 8">
                         <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Padding="8">
@@ -31,11 +31,11 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="models:TaskItem">
                                         <DockPanel Margin="0 2">
-                                            <Button DockPanel.Dock="Right"
+                                            <Button Classes="AppButton" DockPanel.Dock="Right"
                                                     Content="✕"
                                                     Command="{Binding $parent[ItemsControl].((vm:TaskListFormViewModel)DataContext).RemoveItemCommand}"
                                                     CommandParameter="{Binding}" />
-                                            <TextBox Text="{Binding Content}" />
+                                            <TextBox Classes="Input" Text="{Binding Content}" />
                                         </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -46,7 +46,7 @@
             </StackPanel>
         </ScrollViewer>
         <StackPanel Grid.Row="1">
-            <Button HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" />
+            <Button Classes="AppButton" HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

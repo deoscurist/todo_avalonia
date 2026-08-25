@@ -17,7 +17,7 @@
         </Border.Effect>
         <Grid RowDefinitions="32,*">
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right">
-                <Button Content="|">
+                <Button Classes="AppButton" Content="|">
                     <Button.Flyout>
                         <MenuFlyout>
                             <MenuItem
@@ -31,10 +31,10 @@
                 </Button>
             </StackPanel>
             <StackPanel VerticalAlignment="Center" Grid.Row="1">
-                <TextBlock Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding TaskListObject.Title}" />
+                <TextBlock Classes="Heading" Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding TaskListObject.Title}" />
                 <Grid ColumnDefinitions="*,Auto,*">
-                    <TextBlock FontSize="12" Text="{Binding TaskListObject.Status}" />
-                    <TextBlock HorizontalAlignment="Right" Grid.Column="2" FontSize="12" Text="{Binding TaskListObject.ExpiredAt}" />
+                    <TextBlock Classes="Meta" FontSize="12" Text="{Binding TaskListObject.Status}" />
+                    <TextBlock Classes="Meta" HorizontalAlignment="Right" Grid.Column="2" FontSize="12" Text="{Binding TaskListObject.ExpiredAt}" />
                 </Grid>
             </StackPanel>
         </Grid>

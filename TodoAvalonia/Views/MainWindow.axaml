@@ -22,51 +22,6 @@
     <Window.Resources>
         <converters:NotificationTypeConverter x:Key="NotificationTypeConverter" />
     </Window.Resources>
-    <Window.Styles>
-        <Style Selector="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
-        </Style>
-        <Style Selector="Button">
-            <Setter Property="FontFamily" Value="{StaticResource BadScript}" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="BorderBrush" Value="DeepPink" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Background" Value="Pink" />
-        </Style>
-        <Style Selector="TextBox">
-            <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
-        </Style>
-        <Style Selector="Border.TaskCard">
-            <Setter Property="BorderBrush" Value="DeepPink" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Background" Value="White" />
-        </Style>
-        <Style Selector="Border.info">
-            <Setter Property="Background" Value="RoyalBlue" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="BorderBrush" Value="#30000000" />
-        </Style>
-        <Style Selector="Border.success">
-            <Setter Property="Background" Value="MediumSeaGreen" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="BorderBrush" Value="#30000000" />
-        </Style>
-        <Style Selector="Border.error">
-            <Setter Property="Background" Value="PaleVioletRed" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="BorderBrush" Value="#30000000" />
-        </Style>
-        <Style Selector="Border.warning">
-            <Setter Property="Background" Value="Coral" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="BorderBrush" Value="#30000000" />
-        </Style>
-    </Window.Styles>
     <Panel>
         <Border CornerRadius="8" ClipToBounds="True">
             <Border.Background>
@@ -117,9 +72,8 @@
 
                 <DockPanel Grid.Row="1">
                     <TextBlock
-                        Foreground="DeepPink"
+                        Classes="AppTitle"
                         Text="My Happy Little Todo List"
-                        FontFamily="{StaticResource Birthstone}"
                         FontSize="48"
                         Margin="16"
                         VerticalAlignment="Center"
@@ -134,16 +88,14 @@
 
                 <Grid ColumnDefinitions="*,*,*" Grid.Row="3" Margin="16 ">
                     <TextBlock
-                        FontFamily="{StaticResource BadScript}"
+                        Classes="Footer"
                         FontSize="18"
-                        Foreground="DeepPink"
                         Text="Copyright. Made by @deoscurist"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Left" />                    
+                        HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="2"
-                        FontFamily="{StaticResource BadScript}"
+                        Classes="Footer"
                         FontSize="18"
-                        Foreground="DeepPink"
                         Text="{Binding AppVersion}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right" />
@@ -162,12 +114,12 @@
                             Margin="0,0,0,8">
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel>
-                                <TextBlock FontSize="24" Text="{Binding Title}" TextWrapping="Wrap"
+                                <TextBlock Classes="Heading" FontSize="24" Text="{Binding Title}" TextWrapping="Wrap"
                                            Foreground="White" VerticalAlignment="Center" />
-                                <TextBlock FontSize="18" Text="{Binding Message}" TextWrapping="Wrap"
+                                <TextBlock Classes="Body" FontSize="18" Text="{Binding Message}" TextWrapping="Wrap"
                                            Foreground="White" VerticalAlignment="Center" IsVisible="{Binding HasMessage}"/>
                             </StackPanel>
-                            <Button Grid.Column="1" Content="x"
+                            <Button Classes="AppButton" Grid.Column="1" Content="x"
                                     Background="Transparent" Foreground="Gray"
                                     Padding="4,2" Margin="8,0,0,0"
                                     Command="{Binding #NotificationControl.((vm:MainViewModel)DataContext).Notifications.DismissCommand}"
