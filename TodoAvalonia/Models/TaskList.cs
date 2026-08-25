@@ -2,18 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace TodoAvalonia.Models;
 
-public class TaskList
+public partial class TaskList : ObservableObject
 {
     public Guid Id { get; init; } = Guid.NewGuid();
-    public string? Title { get; set; } = string.Empty;
+    [ObservableProperty] public partial string? Title { get; set; } = string.Empty;
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
-    public DateTime? ExpiredAt { get; set; }
+    [NotifyPropertyChangedFor(nameof(Status))] [ObservableProperty] public partial DateTime? ExpiredAt { get; set; }
     public int Order { get; set; }
 
-    public ObservableCollection<TaskItem> TaskItems { get; set; } = [];
+    [NotifyPropertyChangedFor(nameof(Status))] [ObservableProperty] public partial ObservableCollection<TaskItem> TaskItems { get; set; } = [];
 
     public string Status
     {

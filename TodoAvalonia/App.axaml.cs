@@ -23,6 +23,7 @@ public partial class App : Application
 
         services.AddSingleton<LiteDatabase>(_ => new LiteDatabase(StoragePathProvider.AppTasksDatabasePath()) {UtcDate = true});
         services.AddSingleton<ITaskListRepository, TaskListRepository>();
+        services.AddSingleton<TaskListStore, TaskListStore>();
         services.AddSingleton<TaskListIndexViewModel>();
         services.AddSingleton<MainViewModel>();
 

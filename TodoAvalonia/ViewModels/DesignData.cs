@@ -8,7 +8,8 @@ namespace TodoAvalonia.ViewModels;
 
 public static class DesignData
 {
-    public static TaskListIndexViewModel DesignTaskLists { get; } = new(new DesignTaskListRepository());
+    public static TaskListIndexViewModel DesignTaskLists { get; } =
+        new(new TaskListStore(new DesignTaskListRepository()));
     public static TaskList DesignTaskList { get; } = new()
     {
         Title = "Task title",

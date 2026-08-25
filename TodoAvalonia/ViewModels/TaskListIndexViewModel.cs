@@ -1,78 +1,54 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Messaging;
 using TodoAvalonia.Data;
 using TodoAvalonia.Messages;
 using System.Collections.Specialized;
 using System.Linq;
+using TodoAvalonia.Models;
 
 namespace TodoAvalonia.ViewModels;
 
 public partial class TaskListIndexViewModel : ViewModelBase
 {
-    private readonly ITaskListRepository _repository;
-    public ObservableCollection<TaskListCardViewModel> TaskLists { get; set; } = new();
+    private readonly TaskListStore _store;
     public ObservableCollection<object> ListItems { get; } = new();
-    
-    private void RefreshLists()
-    {
-        TaskLists.Clear();
-        foreach (var taskList in _repository.GetAll())
-            TaskLists.Add(new TaskListCardViewModel(taskList));
-        CollectListItems();
-    }
     
     private void CollectListItems()
     {
-        ListItems.Clear();
         ListItems.Add(new CreateTaskViewModel());
 
-        foreach (var taskList in TaskLists)
-            ListItems.Add(taskList);
+        foreach (var taskList in _store.TaskLists)
+            ListItems.Add(new TaskListCardViewModel(taskList));
     }
 
-    public TaskListIndexViewModel(ITaskListRepository repository)
+    public TaskListIndexViewModel(TaskListStore store)
     {
-        _repository = repository;
-        RefreshLists();
+        _store = store;
         
-        TaskLists.CollectionChanged += (_, e) =>
+        CollectListItems();
+        
+        _store.TaskLists.CollectionChanged += (_, e) =>
         {
-            if (e.Action == NotifyCollectionChangedAction.Move)
-                ListItems.Move(e.OldStartingIndex + 1, e.NewStartingIndex + 1);
-            else
-                CollectListItems();
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    ListItems.Insert(e.NewStartingIndex + 1, new TaskListCardViewModel((TaskList)e.NewItems![0]!));
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    ListItems.RemoveAt(e.OldStartingIndex + 1);
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    ListItems.Move(e.OldStartingIndex + 1, e.NewStartingIndex + 1);
+                    break;
+            }
         };
-        
-        WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListSavedMessage>(this, (r, m) =>                                                                                                         
-        {                                                                                                                                                                                                        
-            repository.Save(m.List);
-            r.RefreshLists(); 
-        });    
-        
-        WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListDeleteMessage>(this, (r, m) =>
-        {
-            repository.Delete(m.Id);
-            r.RefreshLists();                                                                                                                                                                 
-        });   
         
         WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListReorderMessage>(this, (r, m) =>
         {
             if (m.Dragged is not TaskListCardViewModel dragged) return;
 
-            var oldIndex = r.TaskLists.IndexOf(dragged);
-            if (oldIndex < 0 || oldIndex == m.NewIndex) return;
-
-            r.TaskLists.Move(oldIndex, m.NewIndex);
-        });
-        
-        WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListsReorderedMessage>(this, (r, m) =>
-        {
-            for (var i = 0; i < r.TaskLists.Count; i++)
-            {
-                r.TaskLists[i].TaskListObject.Order = i;
-            }
-
-            repository.SaveAll(r.TaskLists.Select(t => t.TaskListObject));
+            r._store.Move(dragged.TaskListObject, m.NewIndex);
         });
     }
 }
