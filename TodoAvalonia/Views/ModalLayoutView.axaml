@@ -5,7 +5,7 @@
              xmlns:vm="using:TodoAvalonia.ViewModels" x:DataType="vm:MainViewModel"
              xmlns:conv="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
              xmlns:converters="using:TodoAvalonia.Converters" 
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
              x:Class="TodoAvalonia.Views.ModalLayoutView">
     <Grid Opacity="{Binding ModalContent, Converter={x:Static converters:ModalConverter.NullToOpacity}}"
           IsHitTestVisible="{Binding ModalContent, Converter={x:Static conv:ObjectConverters.IsNotNull}}">
@@ -19,8 +19,8 @@
                 VerticalAlignment="Stretch"
                 MaxWidth="480"
                 MaxHeight="640"
-                Margin="16"
-                Padding="16"
+                Margin="4"
+                Padding="8"
                 CornerRadius="8"
                 Background="White"
                 BorderBrush="DeepPink"
@@ -28,9 +28,11 @@
             <Border.Effect>
                 <DropShadowEffect Opacity="0.15" Color="Black"/>
             </Border.Effect>
-            <Grid>
-                <ContentControl Content="{Binding ModalContent}" />
-                <Button Classes="AppButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="✕" Click="Close_Click" />
+            <Grid RowDefinitions="48,*">
+                <StackPanel>
+                    <Button Classes="AppButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="✕" Click="Close_Click" />
+                </StackPanel>
+                <ContentControl Grid.Row="1" Content="{Binding ModalContent}" Margin="8 0"/>
             </Grid>
         </Border>
     </Grid>
