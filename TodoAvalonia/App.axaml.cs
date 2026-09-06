@@ -2,9 +2,9 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using TodoAvalonia.Data;
+using TodoAvalonia.Data.DB;
 using TodoAvalonia.ViewModels;
 using TodoAvalonia.Views;
 
@@ -21,7 +21,8 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        services.AddSingleton<LiteDatabase>(_ => new LiteDatabase(StoragePathProvider.AppTasksDatabasePath()) {UtcDate = true});
+        services.AddSingleton<TasksDatabase>();                                                                                                                                                                          
+        services.AddSingleton<AppSettingsDatabase>();
         services.AddSingleton<ITaskListRepository, TaskListRepository>();
         services.AddSingleton<TaskListStore, TaskListStore>();
         services.AddSingleton<TaskListIndexViewModel>();
