@@ -1,0 +1,155 @@
+name: Release
+
+# Запускается только пушем тега вида v1.2.3. На пуш в ветку не реагирует.
+#
+# ЛОВУШКА: workflow должен присутствовать в том коммите, на который поставлен
+# тег. Пометишь тегом коммит, где этого файла ещё нет, — прогон не начнётся
+# вовсе, и без сообщения об ошибке.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  # Существует ради одного: версию получают все шесть сборок, и снятие префикса
+  # делается один раз, а не шестикратно в каждой.
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.parse.outputs.version }}
+    steps:
+      - name: Версия из тега
+        id: parse
+        shell: bash
+        run: |
+          TAG="$GITHUB_REF_NAME"
+          # Формат тега объявлен: "v" плюс номер. Снимаем известный префикс по
+          # контракту, а не «первый символ строки».
+          case "$TAG" in
+            v*) VERSION="${TAG#v}" ;;
+            *)  echo "❌ Тег '$TAG' не в формате v<версия>" >&2; exit 1 ;;
+          esac
+          # Та же проверка, что внутри сборочных скриптов. Здесь она нужна,
+          # чтобы упасть до шести сборок, а не после них.
+          if ! [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+)*$ ]]; then
+            echo "❌ Версия '$VERSION' не годится: нужны только цифры и точки" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 Версия: $VERSION"
+
+  build:
+    needs: version
+    strategy:
+      # Без этой строки падение одной цели отменит пять остальных на полпути.
+      # Ради изоляции целей матрица и заведена.
+      fail-fast: false
+      matrix:
+        include:
+          # Windows кросс-компилируется с Linux: родных утилит сборке не нужно.
+          - target: windows-x64
+            runner: ubuntu-latest
+            script: build-win.sh
+            arch: x64
+          - target: windows-arm64
+            runner: ubuntu-latest
+            script: build-win.sh
+            arch: arm64
+
+          - target: linux-x86_64
+            runner: ubuntu-latest
+            script: build-linux.sh
+            arch: x64
+            appimagetool: x86_64
+          # aarch64 требует нативной машины: appimagetool под ARM на x86 не пойдёт.
+          - target: linux-aarch64
+            runner: ubuntu-24.04-arm
+            script: build-linux.sh
+            arch: arm64
+            appimagetool: aarch64
+
+          # У маковских раннеров codesign, hdiutil и iconutil уже на месте.
+          - target: macos-intel
+            runner: macos-15-intel
+            script: build-mac.sh
+            arch: x64
+          - target: macos-apple-silicon
+            runner: macos-latest
+            script: build-mac.sh
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      # Только линуксовым целям. Кладём в каталог прогона, а не в системные
+      # пути: так не нужны права и нечего чистить за собой.
+      - name: Поставить appimagetool
+        if: matrix.appimagetool != ''
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends desktop-file-utils
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -fsSL -o "$RUNNER_TEMP/bin/appimagetool" \
+            "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${{ matrix.appimagetool }}.AppImage"
+          chmod +x "$RUNNER_TEMP/bin/appimagetool"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: Сборка ${{ matrix.target }}
+        run: |
+          ./TodoAvalonia/Packaging/${{ matrix.script }} \
+            "${{ matrix.arch }}" \
+            "${{ needs.version.outputs.version }}"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.target }}
+          path: TodoAvalonia/Publish/*
+          # Пустой артефакт хуже отсутствующего: он выглядит как успех.
+          if-no-files-found: error
+
+  publish:
+    needs: [version, build]
+    # Выполняется при любом исходе сборок, кроме отмены всего прогона.
+    # Решение о неполном релизе принимает человек, глядя на черновик и на
+    # крестик у упавшей задачи, а не needs.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # Полная история обязательна: без неё git-cliff увидит один коммит
+      # и выдаст пустой changelog.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Диапазон — от предыдущего тега до текущего. Предыдущего нет — берётся
+      # вся история, поэтому первый релиз и последующие идут по одному правилу.
+      - name: Собрать changelog
+        id: changelog
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --latest --strip header
+
+      # Скачивает то, что доехало. Упавшая цель просто не даст своего артефакта.
+      - name: Забрать артефакты
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Черновик релиза
+        uses: softprops/action-gh-release@v3
+        with:
+          draft: true
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.content }}
+          files: dist/*

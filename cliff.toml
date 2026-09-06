@@ -1,0 +1,48 @@
+# Настройка git-cliff — сборка тела релиза из сообщений коммитов.
+#
+# Заголовки разделов на английском намеренно: страница релиза публичная и
+# читается снаружи, а сами сообщения коммитов в проекте тоже английские.
+
+[changelog]
+# Заголовок пустой: workflow вызывает git-cliff с --strip header, а название
+# релиза и так задаётся именем тега.
+header = ""
+
+# Порядок разделов задаётся числом в HTML-комментарии внутри имени группы:
+# git-cliff сортирует группы по строке, а striptags убирает комментарий из
+# вывода. Это штатный приём, иначе разделы вышли бы по алфавиту.
+body = """
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | striptags | trim }}
+{% for commit in commits %}
+- {% if commit.breaking %}**BREAKING** {% endif %}\
+{% if commit.scope %}**{{ commit.scope }}**: {% endif %}\
+{{ commit.message | upper_first }}\
+{% endfor %}
+{% endfor %}
+"""
+
+footer = ""
+trim = true
+
+[git]
+conventional_commits = true
+# Коммиты не по соглашению не выбрасываем: в истории проекта они есть, и
+# терять их в changelog хуже, чем показать в разделе Other.
+filter_unconventional = false
+filter_commits = false
+# Учитываются только релизные теги, прочие метки на историю не влияют.
+tag_pattern = "v[0-9]*"
+topo_order = false
+sort_commits = "oldest"
+
+commit_parsers = [
+  { message = "^feat",     group = "<!-- 0 -->Features" },
+  { message = "^fix",      group = "<!-- 1 -->Bug Fixes" },
+  { message = "^perf",     group = "<!-- 2 -->Performance" },
+  { message = "^refactor", group = "<!-- 3 -->Refactoring" },
+  { message = "^docs",     group = "<!-- 4 -->Documentation" },
+  { message = "^test",     group = "<!-- 5 -->Tests" },
+  { message = "^(build|ci|chore|style)", group = "<!-- 6 -->Other" },
+  { message = ".*",        group = "<!-- 6 -->Other" },
+]
