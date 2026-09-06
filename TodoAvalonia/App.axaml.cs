@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using TodoAvalonia.Data;
 using TodoAvalonia.Data.DB;
+using TodoAvalonia.Langs;
 using TodoAvalonia.Stores;
 using TodoAvalonia.ViewModels;
 using TodoAvalonia.Views;
@@ -14,7 +16,7 @@ namespace TodoAvalonia;
 public partial class App : Application
 {
     public static AppSettingStore AppSettingStore { get; private set; } = null!;
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -24,7 +26,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        services.AddSingleton<TasksDatabase>();                                                                                                                                                                          
+        services.AddSingleton<TasksDatabase>();
         services.AddSingleton<AppSettingsDatabase>();
         services.AddSingleton<IAppSettingRepository, AppSettingRepository>();
         services.AddSingleton<ITaskListRepository, TaskListRepository>();
@@ -39,8 +41,11 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         var provider = ConfigureServices();
-        
+
         AppSettingStore = provider.GetRequiredService<AppSettingStore>();
+
+        Localizer.Instance.SetLanguage(
+            AppSettingStore.AppSettings.First(setting => setting.Key == "lang").Value);
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

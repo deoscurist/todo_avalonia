@@ -86,20 +86,7 @@
 
                 <ContentControl Grid.Row="2" Content="{Binding MainContent}" />
 
-                <Grid ColumnDefinitions="*,*,*" Grid.Row="3" Margin="16 ">
-                    <TextBlock
-                        Classes="Footer"
-                        FontSize="18"
-                        Text="Copyright. Made by @deoscurist"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="2"
-                        Classes="Footer"
-                        FontSize="18"
-                        Text="{Binding AppVersion}"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right" />
-                </Grid>
+                <views:MainFooterView Grid.Row="3" Margin="16"/>
             </Grid>
         </Border>
         <views:ModalLayoutView />
