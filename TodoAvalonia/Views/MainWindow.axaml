@@ -11,7 +11,7 @@
         x:Class="TodoAvalonia.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         d:DataContext="{x:Static vm:DesignData.DesignMain}"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/app-icon.ico"
         Title="TodoAvalonia"
         MinWidth="384"
         CanResize="True"

@@ -4,6 +4,7 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        <ApplicationIcon>Assets\app-icon.ico</ApplicationIcon>
         <Version>0.0.1</Version>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
         <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
@@ -29,5 +30,10 @@
 
     <ItemGroup>
       <AdditionalFiles Include="Assets\Styles\Valentine.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Packaging\linux\" />
+      <Folder Include="Packaging\macos\" />
     </ItemGroup>
 </Project>
