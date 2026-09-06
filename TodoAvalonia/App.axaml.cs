@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using TodoAvalonia.Data;
 using TodoAvalonia.Data.DB;
+using TodoAvalonia.Stores;
 using TodoAvalonia.ViewModels;
 using TodoAvalonia.Views;
 
@@ -12,6 +13,8 @@ namespace TodoAvalonia;
 
 public partial class App : Application
 {
+    public static AppSettingStore AppSettingStore { get; private set; } = null!;
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -23,7 +26,9 @@ public partial class App : Application
 
         services.AddSingleton<TasksDatabase>();                                                                                                                                                                          
         services.AddSingleton<AppSettingsDatabase>();
+        services.AddSingleton<IAppSettingRepository, AppSettingRepository>();
         services.AddSingleton<ITaskListRepository, TaskListRepository>();
+        services.AddSingleton<AppSettingStore, AppSettingStore>();
         services.AddSingleton<TaskListStore, TaskListStore>();
         services.AddSingleton<TaskListIndexViewModel>();
         services.AddSingleton<MainViewModel>();
@@ -34,6 +39,8 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         var provider = ConfigureServices();
+        
+        AppSettingStore = provider.GetRequiredService<AppSettingStore>();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
