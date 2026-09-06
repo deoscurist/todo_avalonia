@@ -6,6 +6,7 @@
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <Version>0.0.1</Version>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
     </PropertyGroup>
 
     <ItemGroup>
