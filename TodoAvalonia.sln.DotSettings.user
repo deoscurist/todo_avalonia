@@ -4,4 +4,7 @@
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::F99B9A14-4735-4C7D-9B5C-39E77D98D9D5::net10.0::TodoAvalonia.Tests.Data.TaskListRepositoryTests.Save_NewTaskList_CanBeFoundById&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TodoAvalonia_002FLangs_002FStrings/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowOnlyErrors/@EntryValue">False</s:Boolean></wpf:ResourceDictionary>
