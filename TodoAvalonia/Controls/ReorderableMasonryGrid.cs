@@ -45,12 +45,11 @@ public class ReorderableMasonryGrid : MasonryGrid
 
         _grabOffset = e.GetPosition(source);
         _draggedData = child.DataContext;
-        e.Pointer.Capture(this);
     }
 
     private void OnChildPointerMoved(object? sender, PointerEventArgs e)
     {
-        if (_draggedData is null || e.Pointer.Captured != this) return;
+        if (_draggedData is null) return;
 
         var draggedChild = Children.FirstOrDefault(c => c.DataContext == _draggedData);
         if (draggedChild is null) return;
@@ -65,6 +64,7 @@ public class ReorderableMasonryGrid : MasonryGrid
         {
             if (distance <= 5) return;
             _dragging = true;
+            e.Pointer.Capture(this);
             _previewOrder = Children.Where(c => c.DataContext is IReorderable).ToList();
             draggedChild.Transitions = null;
         }
