@@ -20,7 +20,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
     </Style>
     <Style Selector="TextBlock.AppTitle">
-        <Setter Property="FontFamily" Value="{StaticResource Birthstone}" />
+        <Setter Property="FontFamily" Value="{StaticResource GreatVibes}" />
         <Setter Property="Foreground" Value="DeepPink" />
     </Style>
     <Style Selector="TextBox.Input">
@@ -28,7 +28,7 @@
     </Style>
     <Style Selector="Button.AppButton">
         <Setter Property="FontFamily" Value="{StaticResource BadScript}" />
-        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="CornerRadius" Value="48" />
         <Setter Property="BorderBrush" Value="DeepPink" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="Pink" />

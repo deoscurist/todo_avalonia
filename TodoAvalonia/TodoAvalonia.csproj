@@ -25,4 +25,8 @@
         <PackageReference Include="LiteDB" Version="5.0.21" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
     </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Assets\Styles\Valentine.axaml" />
+    </ItemGroup>
 </Project>
