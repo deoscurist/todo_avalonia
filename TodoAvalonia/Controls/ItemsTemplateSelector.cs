@@ -12,14 +12,13 @@ public class ItemsTemplateSelector : IDataTemplate
     {
         return param switch
         {
-            TaskListCardViewModel => new TaskListCardView(),
-            CreateTaskViewModel => new CreateTaskView(),
+            TaskListViewModel => new TaskListCardView(),
             _ => null
         };
     }
 
     public bool Match(object? data)
     {
-        return data is TaskListCardViewModel or CreateTaskViewModel;
+        return data is TaskListViewModel;
     }
 }

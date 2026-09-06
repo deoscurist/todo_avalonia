@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
-             xmlns:models="clr-namespace:TodoAvalonia.Models"
              mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
              d:DataContext="{x:Static vm:DesignData.DesignTaskListForm}"
              x:Class="TodoAvalonia.Views.TaskListFormView" x:DataType="vm:TaskListFormViewModel">
@@ -29,7 +28,7 @@
                         <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Padding="8">
                             <ItemsControl ItemsSource="{Binding Items}">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="models:TaskItem">
+                                    <DataTemplate x:DataType="vm:TaskItemViewModel">
                                         <DockPanel Margin="0 2">
                                             <Button Classes="AppButton" DockPanel.Dock="Right"
                                                     Content="✕"

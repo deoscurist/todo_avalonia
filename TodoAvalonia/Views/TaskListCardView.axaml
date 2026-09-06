@@ -6,8 +6,8 @@
              xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="200"
              x:Class="TodoAvalonia.Views.TaskListCardView"
-             d:DataContext="{x:Static vm:DesignData.DesignTaskList}"
-             x:DataType="vm:TaskListCardViewModel">
+             d:DataContext="{x:Static vm:DesignData.DesignTaskListItem}"
+             x:DataType="vm:TaskListViewModel">
     <Border
         Classes="TaskCard"
         Margin="8"
@@ -31,10 +31,10 @@
                 </Button>
             </StackPanel>
             <StackPanel VerticalAlignment="Center" Grid.Row="1">
-                <TextBlock Classes="Heading" Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding TaskListObject.Title}" />
+                <TextBlock Classes="Heading" Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding Title}" />
                 <Grid ColumnDefinitions="*,Auto,*">
-                    <TextBlock Classes="Meta" FontSize="12" Text="{Binding TaskListObject.Status}" />
-                    <TextBlock Classes="Meta" HorizontalAlignment="Right" Grid.Column="2" FontSize="12" Text="{Binding TaskListObject.ExpiredAt}" />
+                    <TextBlock Classes="Meta" FontSize="12" Text="{Binding Status}" />
+                    <TextBlock Classes="Meta" HorizontalAlignment="Right" Grid.Column="2" FontSize="12" Text="{Binding ExpiredAt}" />
                 </Grid>
             </StackPanel>
         </Grid>
