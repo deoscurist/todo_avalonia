@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lang="using:TodoAvalonia.Langs"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TodoAvalonia.Views.TaskListFilterView">
+    <Border
+        Padding="8"
+        BorderBrush="#88FFFFFF"
+        Background="#55FFFFFF"
+        BorderThickness="1"
+        CornerRadius="48"
+        Height="48">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBox 
+                    CornerRadius="24" 
+                    BorderBrush="#FF999999"
+                    Background="#FFFFFFFF"
+                    BorderThickness="1"
+                    FontFamily="{StaticResource Caveat}"
+                    Height="24" 
+                    PlaceholderText="{lang:Tr Filter.SearchPlaceholder}"
+                    MinWidth="240"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8" Margin="0 0 8 0">
+                <TextBlock 
+                    FontFamily="{StaticResource Caveat}" 
+                    Text="{lang:Tr Filter.ReorderBy}"
+                    VerticalAlignment="Center"
+                    />
+                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
+                    <PathIcon Data="{StaticResource Status}" Width="24" Height="24" Foreground="DeepPink"/>
+                </Button>
+                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
+                    <PathIcon Data="{StaticResource CreatedAt}" Width="24" Height="24" Foreground="DeepPink"/>
+                </Button>
+                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
+                    <PathIcon Data="{StaticResource ExpiredAt}" Width="24" Height="24" Foreground="DeepPink"/>
+                </Button>
+                <Separator Height="NaN" Width="1"></Separator>
+                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
+                    <PathIcon Data="{StaticResource SortUp}" Width="24" Height="24" Foreground="DeepPink"/>
+                </Button>
+                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
+                    <PathIcon Data="{StaticResource SortDown}" Width="24" Height="24" Foreground="DeepPink"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

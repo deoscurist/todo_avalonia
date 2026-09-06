@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
+             xmlns:lang="using:TodoAvalonia.Langs"
              mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
              d:DataContext="{x:Static vm:DesignData.DesignTaskListForm}"
              x:Class="TodoAvalonia.Views.TaskListFormView" x:DataType="vm:TaskListFormViewModel">
@@ -11,18 +12,37 @@
             <StackPanel Spacing="8" Margin="0 8">
                 <TextBlock Classes="Heading" FontSize="24" Text="{Binding ModalTitle}"/>
                 <StackPanel Margin="0 8">
-                    <TextBlock Classes="Label">Title:</TextBlock>
-                    <TextBox Classes="Input" PlaceholderText="Type fabulous title..." Text="{Binding Title}" />
+                    <TextBlock 
+                        Classes="Label" 
+                        Text="{lang:Tr Form.TitleLabel}"/>
+                    <TextBox 
+                        Classes="Input" 
+                        PlaceholderText="{lang:Tr Form.TitlePlaceholder}"
+                        Text="{Binding Title}" />
                 </StackPanel>
                 <StackPanel Margin="0 8">
-                    <TextBlock Classes="Label">Expired at:</TextBlock>
+                    <TextBlock 
+                        Classes="Label" 
+                        Text="{lang:Tr Form.ExpiredAtLabel}"
+                        />
                     <DatePicker SelectedDate="{Binding ExpiredAt}" />
                 </StackPanel>
 
                 <StackPanel Margin="0 8">
                     <Grid ColumnDefinitions="*,auto,auto">
-                        <TextBlock Classes="Label" VerticalAlignment="Center" Grid.Column="0">Task List:</TextBlock>
-                        <Button Classes="AppButton" VerticalAlignment="Center" Grid.Column="2" Content="+ Add item" Command="{Binding AddItemCommand}" />
+                        <TextBlock 
+                            Classes="Label" 
+                            VerticalAlignment="Center" 
+                            Grid.Column="0" 
+                            Text="{lang:Tr Form.ItemsLabel}"
+                            />
+                        <Button 
+                            Classes="AppButton" 
+                            VerticalAlignment="Center" 
+                            Grid.Column="2" 
+                            Content="{lang:Tr Form.AddItem}" 
+                            Command="{Binding AddItemCommand}" 
+                            />
                     </Grid>
                     <Grid Margin="0 8">
                         <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Padding="8">
@@ -45,7 +65,11 @@
             </StackPanel>
         </ScrollViewer>
         <StackPanel Grid.Row="1">
-            <Button Classes="AppButton" HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" />
+            <Button 
+                Classes="AppButton" 
+                HorizontalAlignment="Right" 
+                Content="{lang:Tr Form.Save}" 
+                Command="{Binding SaveCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

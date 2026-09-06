@@ -3,6 +3,7 @@
         xmlns:vm="using:TodoAvalonia.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lang="using:TodoAvalonia.Langs"
         xmlns:views="using:TodoAvalonia.Views"
         xmlns:services="clr-namespace:TodoAvalonia.Services"
         xmlns:converters="clr-namespace:TodoAvalonia.Converters"
@@ -13,67 +14,26 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="TodoAvalonia"
         MinWidth="384"
-        WindowDecorations="BorderOnly"
         CanResize="True"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaTitleBarHeightHint="-1"
-        TransparencyLevelHint="Transparent"
+        TransparencyLevelHint="AcrylicBlur"
         Background="Transparent">
     <Window.Resources>
         <converters:NotificationTypeConverter x:Key="NotificationTypeConverter" />
     </Window.Resources>
     <Panel>
-        <Border CornerRadius="8" ClipToBounds="True">
+        <Border>
             <Border.Background>
                 <ImageBrush Source="avares://TodoAvalonia/Assets/bimbo_background.jpg" Stretch="UniformToFill" />
             </Border.Background>
 
-            <Grid RowDefinitions="32,96,*,64">
-                <Border Grid.Row="0" Padding="8 0" Background="#50FFFFFF" BorderBrush="#70FFFFFF" BorderThickness="1"
-                        PointerPressed="TitleBar_PointerPressed">
-                    <DockPanel LastChildFill="False">
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Spacing="4">
-                            <Button Width="24"
-                                    Height="24"
-                                    Padding="0"
-                                    FontSize="10"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Background="#30FF0000"
-                                    BorderBrush="#70FF0000"
-                                    BorderThickness="1"
-                                    Foreground="Black"
-                                    Content="✕" Click="Close_Click" />
-                            <Button Width="24"
-                                    Height="24"
-                                    Padding="0"
-                                    FontSize="10"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Background="#30FFAA00"
-                                    BorderBrush="#70FFAA00"
-                                    BorderThickness="1"
-                                    Foreground="Black"
-                                    Content="□" Click="Maximize_Click" />
-                            <Button Width="24"
-                                    Height="24"
-                                    Padding="0"
-                                    FontSize="10"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Background="#3000FF00"
-                                    BorderBrush="#7000FF00"
-                                    BorderThickness="1"
-                                    Foreground="Black"
-                                    Content="—" Click="Minimize_Click" />
-                        </StackPanel>
-                    </DockPanel>
-                </Border>
-
-                <DockPanel Grid.Row="1">
+            <Grid RowDefinitions="Auto,*,64">
+                <DockPanel Margin="16">
                     <TextBlock
                         Classes="AppTitle"
-                        Text="My Happy Little Todo List"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        Text="{lang:Tr App.Title}"
                         FontSize="48"
                         Margin="16"
                         VerticalAlignment="Center"
@@ -84,14 +44,14 @@
                     </TextBlock>
                 </DockPanel>
 
-                <ContentControl Grid.Row="2" Content="{Binding MainContent}" />
+                <ContentControl Grid.Row="1" Content="{Binding MainContent}" />
 
-                <views:MainFooterView Grid.Row="3" Margin="16"/>
+                <views:MainFooterView Grid.Row="2" Margin="16"/>
             </Grid>
         </Border>
+        
         <views:ModalLayoutView />
 
-        <!-- Notification overlay -->
         <ItemsControl x:Name="NotificationControl" ItemsSource="{Binding Notifications.Notifications}"
                       HorizontalAlignment="Right" VerticalAlignment="Top"
                       Margin="16" MaxWidth="480">

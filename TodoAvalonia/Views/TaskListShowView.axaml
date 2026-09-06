@@ -2,7 +2,56 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="TodoAvalonia.Views.TaskListShowView">
-    Welcome to Avalonia!
+             xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
+             xmlns:lang="using:TodoAvalonia.Langs"
+             xmlns:converters="using:TodoAvalonia.Converters"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
+             d:DataContext="{x:Static vm:DesignData.DesignTaskListItem}"
+             x:Class="TodoAvalonia.Views.TaskListShowView" x:DataType="vm:TaskListViewModel">
+    <StackPanel>
+        <Grid RowDefinitions="Auto,*">
+            <StackPanel Margin="0 ">
+                <StackPanel>
+                    <TextBlock Classes="Heading" FontSize="24" Text="{Binding Title}" />
+                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto,*">
+                    <TextBlock Classes="Meta" FontSize="12">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{x:Static converters:LocalizedKeyConverter.Instance}">
+                                <Binding Path="Status" />
+                                <Binding Path="CurrentCode" Source="{x:Static lang:Localizer.Instance}" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Classes="Meta" HorizontalAlignment="Right" Grid.Column="2" FontSize="12"
+                               Text="{Binding ExpiredAt}" />
+                </Grid>
+                <Separator Margin="0 16" />
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Items}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:TaskItemViewModel">
+                                <Border
+                                    CornerRadius="8"
+                                    BorderBrush="Gray"
+                                    BorderThickness="1"
+                                    Margin="0 4"
+                                    Padding="8 4">
+                                    <DockPanel Margin="0 2">
+                                        <CheckBox IsChecked="{Binding IsDone, Mode=TwoWay}"
+                                                  Content="{Binding Content}" />
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <TextBlock 
+                    IsVisible="{Binding !Items.Count}"
+                    Text="{lang:Tr Show.NoItems}"/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </UserControl>

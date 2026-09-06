@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+             x:Class="TodoAvalonia.Views.TaskListAddButtonView">
+    <Button 
+        Width="48" 
+        Height="48" 
+        BorderThickness="1"
+        BorderBrush="#88FFFFFF"
+        Background="#55FFFFFF"
+        Click="OnClick"
+        CornerRadius="24" >
+        <TextBlock 
+            LineHeight="48" 
+            FontSize="24" 
+            Text="+" 
+            Foreground="DeepPink"
+            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Button>
+</UserControl>
