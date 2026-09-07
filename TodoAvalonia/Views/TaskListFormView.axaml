@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
              xmlns:lang="using:TodoAvalonia.Langs"
-             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
+             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="480"
              d:DataContext="{x:Static vm:DesignData.DesignTaskListForm}"
              x:Class="TodoAvalonia.Views.TaskListFormView" x:DataType="vm:TaskListFormViewModel">
-    <Grid RowDefinitions="*,48" Margin="0 8">
+    <Grid RowDefinitions="*,48">
         <ScrollViewer>
-            <StackPanel Spacing="8" Margin="0 8">
-                <TextBlock Classes="Heading" FontSize="24" Text="{Binding ModalTitle}"/>
+            <StackPanel Spacing="8">
+                <TextBlock Classes="Heading" FontSize="32" Text="{Binding ModalTitle}"/>
                 <StackPanel Margin="0 8">
                     <TextBlock 
                         Classes="Label" 
@@ -25,7 +25,15 @@
                         Classes="Label" 
                         Text="{lang:Tr Form.ExpiredAtLabel}"
                         />
-                    <DatePicker SelectedDate="{Binding ExpiredAt}" />
+                    <StackPanel Spacing="8" Orientation="Vertical">
+                        <DatePicker
+                            Width="300"
+                            SelectedDate="{Binding ExpiredAtDate}" />
+                        <TimePicker
+                            Width="300"
+                            ClockIdentifier="24HourClock"
+                            SelectedTime="{Binding ExpiredAtTime}"/> 
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Margin="0 8">
@@ -37,23 +45,34 @@
                             Text="{lang:Tr Form.ItemsLabel}"
                             />
                         <Button 
+                            Padding="8 4"
                             Classes="AppButton" 
                             VerticalAlignment="Center" 
                             Grid.Column="2" 
-                            Content="{lang:Tr Form.AddItem}" 
                             Command="{Binding AddItemCommand}" 
-                            />
+                            >
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <PathIcon Foreground="DeepPink" VerticalAlignment="Center" Data="{StaticResource Plus}" Width="12" Height="12"/>
+                                <TextBlock VerticalAlignment="Center" Text="{lang:Tr Form.AddItem}" />
+                            </StackPanel>
+                        </Button>
                     </Grid>
-                    <Grid Margin="0 8">
-                        <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Padding="8">
+                    <Grid Margin="0 16">
+                        <Border CornerRadius="8" BorderBrush="#FFDDDDDD" BorderThickness="1" Padding="16 24">
                             <ItemsControl ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Spacing="8"></StackPanel>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="vm:TaskItemViewModel">
-                                        <DockPanel Margin="0 2">
-                                            <Button Classes="AppButton" DockPanel.Dock="Right"
-                                                    Content="✕"
+                                        <DockPanel HorizontalSpacing="8">
+                                            <Button Width="24" Height="24" Classes="Transparent" DockPanel.Dock="Right"
                                                     Command="{Binding $parent[ItemsControl].((vm:TaskListFormViewModel)DataContext).RemoveItemCommand}"
-                                                    CommandParameter="{Binding}" />
+                                                    CommandParameter="{Binding}">
+                                                <PathIcon VerticalAlignment="Center" Data="{StaticResource Close}" Width="24" Height="24"/>
+                                            </Button>
                                             <TextBox Classes="Input" Text="{Binding Content}" />
                                         </DockPanel>
                                     </DataTemplate>
@@ -66,6 +85,7 @@
         </ScrollViewer>
         <StackPanel Grid.Row="1">
             <Button 
+                Padding="8 4"
                 Classes="AppButton" 
                 HorizontalAlignment="Right" 
                 Content="{lang:Tr Form.Save}" 

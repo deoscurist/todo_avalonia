@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:TodoAvalonia.Models"
              xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
              xmlns:lang="using:TodoAvalonia.Langs"
              xmlns:converters="using:TodoAvalonia.Converters"
@@ -10,6 +9,14 @@
              x:Class="TodoAvalonia.Views.TaskListCardView"
              d:DataContext="{x:Static vm:DesignData.DesignTaskListItem}"
              x:DataType="vm:TaskListViewModel">
+    <UserControl.Styles>
+        <Style Selector="PathIcon.Status">
+            <Style.Resources>
+                <converters:TaskListStatusColorConverter x:Key="StatusColor"/>
+            </Style.Resources>
+            <Setter Property="Foreground" Value="{Binding Status, Converter={StaticResource StatusColor}}"/>
+        </Style>
+    </UserControl.Styles>
     <Border
         Classes="TaskCard"
         Tapped="Border_Tapped"
@@ -20,7 +27,7 @@
         </Border.Effect>
         <Grid RowDefinitions="32,*">
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right">
-                <Button Width="32" Height="32" Classes="AppButton" Tapped="MenuButton_Tapped">
+                <Button Width="32" Height="32" Classes="ActionButton" Tapped="MenuButton_Tapped">
                     <Button.Flyout>
                         <MenuFlyout>
                             <MenuItem
@@ -46,20 +53,26 @@
                     <PathIcon Data="{StaticResource DropMenu}" Width="16" Height="16" Foreground="DeepPink"/>
                 </Button>
             </StackPanel>
-            <StackPanel VerticalAlignment="Center" Grid.Row="1" Margin="8">
-                <TextBlock Classes="Heading" Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding Title}" />
-                <Grid ColumnDefinitions="*,Auto,*">
-                    <TextBlock Classes="Meta" FontSize="12">
-                        <TextBlock.Text>
-                            <MultiBinding Converter="{x:Static converters:LocalizedKeyConverter.Instance}">
-                                <Binding Path="Status" />
-                                <Binding Path="CurrentCode" Source="{x:Static lang:Localizer.Instance}" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <TextBlock Classes="Meta" HorizontalAlignment="Right" Grid.Column="2" FontSize="12" Text="{Binding ExpiredAt}" />
+            <DockPanel VerticalAlignment="Top" Grid.Row="1" Margin="8">
+                <TextBlock DockPanel.Dock="Top" Classes="Heading" Margin="0 0 0 10" FontSize="24" TextWrapping="Wrap" Text="{Binding Title}" />
+                <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,*">
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Left">
+                        <PathIcon Classes="Status" Data="{StaticResource Status}" Width="16" Height="16"/>
+                        <TextBlock Classes="Meta" FontSize="12">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{x:Static converters:LocalizedKeyConverter.Instance}">
+                                    <Binding Path="Status" />
+                                    <Binding Path="CurrentCode" Source="{x:Static lang:Localizer.Instance}" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right" IsVisible="{Binding ExpiredAt, Converter={x:Static ObjectConverters.IsNotNull}}" Grid.Column="2" Orientation="Horizontal" Spacing="4">
+                        <PathIcon Data="{StaticResource ExpiredAt}" Width="16" Height="16" Foreground="DeepPink"/>
+                        <TextBlock Classes="Meta" HorizontalAlignment="Right" FontSize="12" Text="{Binding ExpiredAt, StringFormat='{}{0:dd/MM/yyyy HH:mm tt}'}" />
+                    </StackPanel>
                 </Grid>
-            </StackPanel>
+            </DockPanel>
         </Grid>
     </Border>
 </UserControl>

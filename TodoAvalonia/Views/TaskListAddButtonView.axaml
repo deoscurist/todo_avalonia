@@ -12,11 +12,12 @@
         Background="#55FFFFFF"
         Click="OnClick"
         CornerRadius="24" >
-        <TextBlock 
-            LineHeight="48" 
-            FontSize="24" 
-            Text="+" 
-            Foreground="DeepPink"
-            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <PathIcon Foreground="DeepPink" VerticalAlignment="Center" Data="{StaticResource Plus}" Width="12" Height="12"/>
+        <!-- <TextBlock  -->
+        <!--     LineHeight="48"  -->
+        <!--     FontSize="24"  -->
+        <!--     Text="+"  -->
+        <!--     Foreground="DeepPink" -->
+        <!--     HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
     </Button>
 </UserControl>

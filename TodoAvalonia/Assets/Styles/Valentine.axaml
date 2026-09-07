@@ -5,6 +5,7 @@
     </Style>
     <Style Selector="TextBlock.Label">
         <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+        <Setter Property="FontSize" Value="24" />
     </Style>
     <Style Selector="TextBlock.Meta">
         <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
@@ -25,6 +26,7 @@
     </Style>
     <Style Selector="TextBox.Input">
         <Setter Property="FontFamily" Value="{StaticResource Caveat}" />
+        <Setter Property="BorderBrush" Value="#FFDDDDDD" />
     </Style>
     <Style Selector="Button.AppButton">
         <Setter Property="FontFamily" Value="{StaticResource BadScript}" />
@@ -32,6 +34,16 @@
         <Setter Property="BorderBrush" Value="DeepPink" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="Pink" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinWidth" Value="96" />
+    </Style>
+    <Style Selector="Button.ActionButton">
+        <Setter Property="FontFamily" Value="{StaticResource BadScript}" />
+        <Setter Property="CornerRadius" Value="48" />
+        <Setter Property="BorderBrush" Value="DeepPink" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
     <Style Selector="Border.TaskCard">
         <Setter Property="BorderBrush" Value="DeepPink" />
@@ -62,5 +74,18 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="BorderBrush" Value="#30000000" />
+    </Style>
+    <Style Selector="Button.Transparent">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Button.Transparent:pointerover /template/ ContentPresenter#PART_ContentPresenter, 
+        Button.ModalClose:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Button.Transparent PathIcon">
+        <Setter Property="Foreground" Value="DeepPink"/>
+    </Style>
+    <Style Selector="Button.Transparent:pointerover:focus PathIcon">
+        <Setter Property="Foreground" Value="HotPink"/>
     </Style>
 </Styles>

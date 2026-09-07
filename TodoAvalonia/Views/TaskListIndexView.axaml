@@ -26,7 +26,7 @@
             <ItemsControl Margin="8 48" ItemsSource="{Binding ListItems}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <controls:ReorderableMasonryGrid MinItemWidth="256" />
+                        <controls:MasonryGrid MinItemWidth="256" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>

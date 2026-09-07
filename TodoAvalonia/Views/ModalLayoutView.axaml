@@ -28,9 +28,11 @@
             <Border.Effect>
                 <DropShadowEffect Opacity="0.15" Color="Black"/>
             </Border.Effect>
-            <Grid RowDefinitions="48,*">
+            <Grid RowDefinitions="32,*">
                 <StackPanel>
-                    <Button Classes="AppButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="✕" Click="Close_Click" />
+                    <Button Width="32" Classes="Transparent" CornerRadius="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Close_Click">
+                        <PathIcon VerticalAlignment="Center" Data="{StaticResource Close}" Width="32" Height="32"/>
+                    </Button>
                 </StackPanel>
                 <ContentControl Grid.Row="1" Content="{Binding ModalContent}" Margin="8 0"/>
             </Grid>
