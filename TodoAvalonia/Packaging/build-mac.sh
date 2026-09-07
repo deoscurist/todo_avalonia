@@ -78,6 +78,10 @@ fi
 
 # --- Отображаемое имя ---
 DISPLAY_NAME="${3:-$EXEC_NAME}"
+# В имя файла пробелы не пускаем: в ссылке на страницу релиза они превращаются
+# в %20. На вывеску это не влияет — в бандле и в Info.plist имя остаётся как
+# передано, с пробелами.
+FILE_NAME="${DISPLAY_NAME// /_}"
 
 # --- Иконка ---
 # Имя файла значка в Resources обязано совпадать с CFBundleIconFile, поэтому
@@ -95,7 +99,7 @@ echo ""
 echo "=== 🍎 $DISPLAY_NAME $VERSION, архитектура $ARCH ==="
 
 PUBLISH_DIR="$PROJECT_DIR/bin/Release/$TFM/osx-$ARCH/publish"
-DMG_FILE="$OUTPUT_DIR/${DISPLAY_NAME}-${VERSION}-macos-${ARCH_LABEL}.dmg"
+DMG_FILE="$OUTPUT_DIR/${FILE_NAME}-${VERSION}-macos-${ARCH_LABEL}.dmg"
 
 # --- Сборка ---
 echo "🔨 dotnet publish для $ARCH..."

@@ -66,12 +66,15 @@ fi
 
 # --- Отображаемое имя ---
 DISPLAY_NAME="${3:-$EXEC_NAME}"
+# В имя файла пробелы не пускаем: в ссылке на страницу релиза они превращаются
+# в %20.
+FILE_NAME="${DISPLAY_NAME// /_}"
 
 echo ""
 echo "=== 🪟 $DISPLAY_NAME $VERSION, архитектура $ARCH ==="
 
 PUBLISH_DIR="$PROJECT_DIR/bin/Release/$TFM/win-$ARCH/publish"
-EXE_FILE="$OUTPUT_DIR/${DISPLAY_NAME}-${VERSION}-windows-${ARCH}.exe"
+EXE_FILE="$OUTPUT_DIR/${FILE_NAME}-${VERSION}-windows-${ARCH}.exe"
 
 # --- Сборка ---
 # PublishSingleFile складывает управляемые сборки внутрь .exe.

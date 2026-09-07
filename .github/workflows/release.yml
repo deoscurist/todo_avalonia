@@ -105,7 +105,8 @@ jobs:
         run: |
           ./TodoAvalonia/Packaging/${{ matrix.script }} \
             "${{ matrix.arch }}" \
-            "${{ needs.version.outputs.version }}"
+            "${{ needs.version.outputs.version }}" \
+            "My Happy Little Todo List"
 
       - uses: actions/upload-artifact@v7
         with:

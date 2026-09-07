@@ -76,6 +76,9 @@ fi
 
 # --- Отображаемое имя ---
 DISPLAY_NAME="${3:-$EXEC_NAME}"
+# В имя файла пробелы не пускаем: в ссылке на страницу релиза они превращаются
+# в %20. На вывеску это не влияет — в ярлыке Name= остаётся как передано.
+FILE_NAME="${DISPLAY_NAME// /_}"
 
 # --- Иконки ---
 # Имя значка в .desktop обязано совпадать с именем файла в корне AppDir, поэтому
@@ -92,7 +95,7 @@ echo ""
 echo "=== 🐧 $DISPLAY_NAME $VERSION, архитектура $ARCH ($APPIMAGE_ARCH) ==="
 
 PUBLISH_DIR="$PROJECT_DIR/bin/Release/$TFM/linux-$ARCH/publish"
-APPIMAGE_FILE="$OUTPUT_DIR/${DISPLAY_NAME}-${VERSION}-linux-${APPIMAGE_ARCH}.AppImage"
+APPIMAGE_FILE="$OUTPUT_DIR/${FILE_NAME}-${VERSION}-linux-${APPIMAGE_ARCH}.AppImage"
 
 # --- Сборка ---
 echo "🔨 dotnet publish для linux-$ARCH..."
