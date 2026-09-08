@@ -59,19 +59,22 @@
                 <DataTemplate>
                     <Border converters:ClassBinding.Classes="{Binding Type, Converter={StaticResource NotificationTypeConverter}}" CornerRadius="8" Padding="12,8"
                             Margin="0,0,0,8">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel MinWidth="256">
                                 <TextBlock Classes="Heading" FontSize="24" Text="{Binding Title}" TextWrapping="Wrap"
                                            Foreground="White" VerticalAlignment="Center" />
                                 <TextBlock Classes="Body" FontSize="18" Text="{Binding Message}" TextWrapping="Wrap"
                                            Foreground="White" VerticalAlignment="Center" IsVisible="{Binding HasMessage}"/>
                             </StackPanel>
-                            <Button Classes="AppButton" Grid.Column="1" Content="x"
+                            <Button Classes="NotificationButton" Grid.Column="1"
+                                    Width="24" Height="24"
                                     Background="Transparent" Foreground="Gray"
                                     Padding="4,2" Margin="8,0,0,0"
                                     Command="{Binding #NotificationControl.((vm:MainViewModel)DataContext).Notifications.DismissCommand}"
-                                    CommandParameter="{Binding}" />
-                        </Grid>
+                                    CommandParameter="{Binding}">
+                                <PathIcon Foreground="White" VerticalAlignment="Center" Data="{StaticResource Close}" Width="24" Height="24"/>
+                            </Button>
+                        </StackPanel>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

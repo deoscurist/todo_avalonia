@@ -71,11 +71,7 @@ public partial class TaskListViewModel : ViewModelBase, IReorderable
     private void Edit() => WeakReferenceMessenger.Default.Send(new ShowModalMessage(new TaskListFormViewModel(TaskList)));
     
     [RelayCommand]
-    private void Delete()
-    {
-        WeakReferenceMessenger.Default.Send(new NotificationMessage(Localizer.Instance["Success.TaskDeleted"]));
-        WeakReferenceMessenger.Default.Send(new TaskListDeleteMessage(TaskList.Id));
-    }
+    private void Delete() => WeakReferenceMessenger.Default.Send(new TaskListDeleteMessage(TaskList.Id));
     
     [RelayCommand]
     private void Open() => WeakReferenceMessenger.Default.Send(new ShowModalMessage(new TaskListShowView{ DataContext = this}));

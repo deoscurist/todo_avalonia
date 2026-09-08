@@ -86,11 +86,17 @@ public partial class TaskListIndexViewModel : ViewModelBase
                 {
                     r._store.Update(m.List);
                 }
-                WeakReferenceMessenger.Default.Send(new NotificationMessage(Localizer.Instance["Success.TaskSaved"]));
+                WeakReferenceMessenger.Default.Send(new NotificationMessage(
+                    Title: Localizer.Instance["Success.TaskSaved"],
+                    Type: "success"
+                    ));
             }
             catch (Exception e)
             {
-                WeakReferenceMessenger.Default.Send(new NotificationMessage(e.Message));
+                WeakReferenceMessenger.Default.Send(new NotificationMessage(
+                    Title: e.Message,
+                    Type: "error"
+                    ));
             }
         });
 
@@ -103,11 +109,18 @@ public partial class TaskListIndexViewModel : ViewModelBase
                 {
                     r._store.Delete(model);
                 }
-                WeakReferenceMessenger.Default.Send(new NotificationMessage(Localizer.Instance["Success.TaskDeleted"]));
+
+                WeakReferenceMessenger.Default.Send(new NotificationMessage(
+                    Title: Localizer.Instance["Success.TaskDeleted"],
+                    Type: "success"
+                    ));
             }
             catch (Exception e)
             {
-                WeakReferenceMessenger.Default.Send(new NotificationMessage(e.Message));
+                WeakReferenceMessenger.Default.Send(new NotificationMessage(
+                    Title: e.Message,
+                    Type: "error"
+                    ));
             }
         });
 
