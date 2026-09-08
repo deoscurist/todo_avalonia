@@ -65,10 +65,7 @@ public class TaskListStore
         }
         catch (Exception e)
         {
-            WeakReferenceMessenger.Default.Send(new NotificationMessage(
-                Title: e.Message,
-                Type: "error"
-                ));
+            Console.WriteLine(e);
             throw;
         }
     }

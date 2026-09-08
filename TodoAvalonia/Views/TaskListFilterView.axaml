@@ -3,8 +3,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:lang="using:TodoAvalonia.Langs"
+             xmlns:vm="clr-namespace:TodoAvalonia.ViewModels"
+             xmlns:converters="using:TodoAvalonia.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:TaskListFilterViewModel"
              x:Class="TodoAvalonia.Views.TaskListFilterView">
+    <UserControl.DataContext>                                                                                                                                                                                    
+        <vm:TaskListFilterViewModel/>                                                                                                                                                                            
+    </UserControl.DataContext>  
+    <UserControl.Resources>
+        <converters:TaskListFilterSelectedConverter x:Key="Selected"/>
+    </UserControl.Resources>
     <Border
         Padding="8"
         BorderBrush="#88FFFFFF"
@@ -25,27 +34,55 @@
             <!--         PlaceholderText="{lang:Tr Filter.SearchPlaceholder}" -->
             <!--         MinWidth="240"/> -->
             <!-- </StackPanel> -->
-            <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8" Margin="0 0 8 0">
+            <StackPanel Classes="Filter" Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8" Margin="0 0 8 0">
                 <TextBlock 
                     FontFamily="{StaticResource Caveat}" 
                     Text="{lang:Tr Filter.ReorderBy}"
                     VerticalAlignment="Center"
                     />
-                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
-                    <PathIcon Data="{StaticResource Status}" Width="24" Height="24" Foreground="DeepPink"/>
+                <Button
+                    Classes.Selected="{Binding FilterBy, Converter={StaticResource Selected}, ConverterParameter=status}"
+                    Command="{Binding SetFilterByCommand}" 
+                    CommandParameter="status" 
+                    FontSize="12" 
+                    Padding="0" 
+                    VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource Status}" Width="24" Height="24"/>
                 </Button>
-                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
-                    <PathIcon Data="{StaticResource CreatedAt}" Width="24" Height="24" Foreground="DeepPink"/>
+                <Button 
+                    Classes.Selected="{Binding FilterBy, Converter={StaticResource Selected}, ConverterParameter=created}"
+                    Command="{Binding SetFilterByCommand}" 
+                    CommandParameter="created" 
+                    FontSize="12" 
+                    Padding="0" 
+                    VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource CreatedAt}" Width="24" Height="24"/>
                 </Button>
-                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
-                    <PathIcon Data="{StaticResource ExpiredAt}" Width="24" Height="24" Foreground="DeepPink"/>
+                <Button 
+                    Classes.Selected="{Binding FilterBy, Converter={StaticResource Selected}, ConverterParameter=expired}"
+                    Command="{Binding SetFilterByCommand}" 
+                    CommandParameter="expired" 
+                    FontSize="12" 
+                    Padding="0" 
+                    VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource ExpiredAt}" Width="24" Height="24"/>
                 </Button>
                 <Separator Height="NaN" Width="1"></Separator>
-                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
-                    <PathIcon Data="{StaticResource SortUp}" Width="24" Height="24" Foreground="DeepPink"/>
+                <Button
+                    Command="{Binding ReorderAllCommand}" 
+                    CommandParameter="asc"
+                    FontSize="12" 
+                    Padding="0" 
+                    VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource SortUp}" Width="24" Height="24"/>
                 </Button>
-                <Button FontSize="12" Padding="0" VerticalAlignment="Center" Background="Transparent">
-                    <PathIcon Data="{StaticResource SortDown}" Width="24" Height="24" Foreground="DeepPink"/>
+                <Button
+                    Command="{Binding ReorderAllCommand}" 
+                    CommandParameter="desc"  
+                    FontSize="12" 
+                    Padding="0" 
+                    VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource SortDown}" Width="24" Height="24"/>
                 </Button>
             </StackPanel>
         </Grid>

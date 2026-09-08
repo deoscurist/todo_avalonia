@@ -92,4 +92,21 @@
     <Style Selector="Button.Transparent:pointerover:focus PathIcon">
         <Setter Property="Foreground" Value="HotPink"/>
     </Style>
+    <Style Selector="StackPanel.Filter Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="CornerRadius" Value="24"/>
+    </Style>
+    <Style Selector="StackPanel.Filter Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="CornerRadius" Value="24"/>
+    </Style>
+    <Style Selector="StackPanel.Filter Button PathIcon">
+        <Setter Property="Foreground" Value="DeepPink"/>
+    </Style>
+    <Style Selector="StackPanel.Filter Button:disabled PathIcon">
+        <Setter Property="Foreground" Value="Gray"/>
+    </Style>
+    <Style Selector="StackPanel.Filter Button.Selected PathIcon">
+        <Setter Property="Foreground" Value="HotPink"/>
+    </Style>
 </Styles>
