@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Assets\app-icon.ico</ApplicationIcon>
-        <Version>0.0.1</Version>
+        <Version>0.1.0</Version>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
         <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
     </PropertyGroup>
