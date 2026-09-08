@@ -16,6 +16,7 @@ namespace TodoAvalonia;
 public partial class App : Application
 {
     public static AppSettingStore AppSettingStore { get; private set; } = null!;
+    public static TaskListStore TaskListStore { get; private set; } = null!;
 
     public override void Initialize()
     {
@@ -43,6 +44,7 @@ public partial class App : Application
         var provider = ConfigureServices();
 
         AppSettingStore = provider.GetRequiredService<AppSettingStore>();
+        TaskListStore = provider.GetRequiredService<TaskListStore>();
 
         Localizer.Instance.SetLanguage(
             AppSettingStore.AppSettings.First(setting => setting.Key == "lang").Value);
