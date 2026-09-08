@@ -7,8 +7,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
-using CommunityToolkit.Mvvm.Messaging;
-using TodoAvalonia.Messages;
 
 namespace TodoAvalonia.Controls;
 
@@ -106,8 +104,8 @@ public class ReorderableMasonryGrid : MasonryGrid
             }
 
             var newIndex = draggedChild is not null ? _previewOrder!.IndexOf(draggedChild) : -1;
-            if (newIndex >= 0)
-                WeakReferenceMessenger.Default.Send(new TaskListReorderMessage(_draggedData, newIndex));
+            if (newIndex >= 0 && _draggedData is IReorderable reorderable)
+                reorderable.NewIndex(newIndex);
         }
 
         _previewOrder = null;

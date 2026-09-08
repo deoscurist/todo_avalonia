@@ -123,16 +123,5 @@ public partial class TaskListIndexViewModel : ViewModelBase
                     ));
             }
         });
-
-        WeakReferenceMessenger.Default.Register<TaskListIndexViewModel, TaskListReorderMessage>(this, (r, m) =>
-        {
-            if (m.Dragged is not TaskListViewModel dragged) return;
-
-            var model = r._store.TaskLists.FirstOrDefault(t => t.Id == dragged.TaskList.Id);
-            if (model is null) return;
-
-            int actualStoreIndex = Math.Max(0, m.NewIndex); 
-            r._store.Reorder(model, actualStoreIndex);
-        });
     }
 }
