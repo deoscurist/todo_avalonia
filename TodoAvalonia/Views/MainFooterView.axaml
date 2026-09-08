@@ -25,15 +25,16 @@
                    VerticalAlignment="Center"
                    HorizontalAlignment="Right" />
         <StackPanel Orientation="Horizontal" Grid.Column="3" Spacing="8">
-            <Button
-                Width="32"
-                Height="32"
-                BorderThickness="1"
-                BorderBrush="#88FFFFFF"
-                Background="#55FFFFFF"
-                CornerRadius="32">
-                <PathIcon Data="{StaticResource Settings}" Width="16" Height="16" Foreground="DeepPink" />
-            </Button>
+            <!-- @todo -->
+            <!-- <Button -->
+            <!--     Width="32" -->
+            <!--     Height="32" -->
+            <!--     BorderThickness="1" -->
+            <!--     BorderBrush="#88FFFFFF" -->
+            <!--     Background="#55FFFFFF" -->
+            <!--     CornerRadius="32"> -->
+            <!--     <PathIcon Data="{StaticResource Settings}" Width="16" Height="16" Foreground="DeepPink" /> -->
+            <!-- </Button> -->
             <ComboBox
                 Height="32"
                 Padding="8 0"

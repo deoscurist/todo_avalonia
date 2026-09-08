@@ -13,17 +13,18 @@
         CornerRadius="48"
         Height="48">
         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <TextBox 
-                    CornerRadius="24" 
-                    BorderBrush="#FF999999"
-                    Background="#FFFFFFFF"
-                    BorderThickness="1"
-                    FontFamily="{StaticResource Caveat}"
-                    Height="24" 
-                    PlaceholderText="{lang:Tr Filter.SearchPlaceholder}"
-                    MinWidth="240"/>
-            </StackPanel>
+            <!-- @todo -->
+            <!-- <StackPanel Orientation="Horizontal" Spacing="8"> -->
+            <!--     <TextBox  -->
+            <!--         CornerRadius="24"  -->
+            <!--         BorderBrush="#FF999999" -->
+            <!--         Background="#FFFFFFFF" -->
+            <!--         BorderThickness="1" -->
+            <!--         FontFamily="{StaticResource Caveat}" -->
+            <!--         Height="24"  -->
+            <!--         PlaceholderText="{lang:Tr Filter.SearchPlaceholder}" -->
+            <!--         MinWidth="240"/> -->
+            <!-- </StackPanel> -->
             <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8" Margin="0 0 8 0">
                 <TextBlock 
                     FontFamily="{StaticResource Caveat}" 
