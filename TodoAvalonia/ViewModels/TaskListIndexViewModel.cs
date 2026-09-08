@@ -51,7 +51,7 @@ public partial class TaskListIndexViewModel : ViewModelBase
             case NotifyCollectionChangedAction.Remove:
                 if (e.OldStartingIndex >= 0)
                 {
-                    ListItems.RemoveAt(e.OldStartingIndex + 1);
+                    ListItems.RemoveAt(e.OldStartingIndex);
                 }
                 break;
 
@@ -131,7 +131,7 @@ public partial class TaskListIndexViewModel : ViewModelBase
             var model = r._store.TaskLists.FirstOrDefault(t => t.Id == dragged.TaskList.Id);
             if (model is null) return;
 
-            int actualStoreIndex = Math.Max(0, m.NewIndex - 1); 
+            int actualStoreIndex = Math.Max(0, m.NewIndex); 
             r._store.Reorder(model, actualStoreIndex);
         });
     }

@@ -108,8 +108,6 @@ public class ReorderableMasonryGrid : MasonryGrid
             var newIndex = draggedChild is not null ? _previewOrder!.IndexOf(draggedChild) : -1;
             if (newIndex >= 0)
                 WeakReferenceMessenger.Default.Send(new TaskListReorderMessage(_draggedData, newIndex));
-
-            WeakReferenceMessenger.Default.Send(new TaskListsReorderedMessage());
         }
 
         _previewOrder = null;
